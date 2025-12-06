@@ -1,0 +1,28 @@
+{
+    "name": "arefshojaei/tgram",
+    "description": "PHP Telegram Bot",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TGram\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ArefShojaei",
+            "email": "arefshojaei82@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^10"
+    },
+    "require": {
+        "arefshojaei/kitdash": "^1.4",
+        "guzzlehttp/guzzle": "^7.10"
+    }
+}
