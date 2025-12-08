@@ -43,4 +43,14 @@ trait HasListener
     {
         $this->fallback = $callback;
     }
+
+    public function start(callable $callback): void
+    {
+        $this->command("start", $callback);
+    }
+
+    public function help(callable $callback): void
+    {
+        $this->command("help", $callback);
+    }
 }
