@@ -47,7 +47,6 @@ class Bot implements IBot
     public function getUpdates(array $options = []): object
     {
         return $this->request(
-            method: HttpVerb::READABLE,
             endpoint: "getUpdates",
             options: $options,
         );
