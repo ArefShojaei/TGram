@@ -2,7 +2,7 @@
 
 namespace TGram\Abilities;
 
-use TGram\Enums\MediaReciver;
+use TGram\Enums\MediaType;
 
 
 trait HasListener
@@ -32,7 +32,7 @@ trait HasListener
         }
     }
 
-    public function on(MediaReciver $event, callable $callback): void
+    public function on(MediaType $event, callable $callback): void
     {
         if (!isset($this->events[$event->value])) {
             $this->events[$event->value] = $callback;

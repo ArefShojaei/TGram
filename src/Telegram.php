@@ -4,7 +4,7 @@ namespace TGram;
 
 use TGram\Abilities\HasListener;
 use TGram\DTO\Update;
-use TGram\Enums\{BotProcessMode, MediaReciver};
+use TGram\Enums\{BotProcessMode, MediaType};
 use TGram\Interfaces\Telegram as ITelegram;
 
 
@@ -12,7 +12,7 @@ final class Telegram extends Bot implements ITelegram
 {
     use HasListener;
 
-    
+
     public function __construct(string $token)
     {
         parent::__construct($token);
@@ -78,7 +78,7 @@ final class Telegram extends Bot implements ITelegram
                 }
 
                 # Media Handler
-                $event = MediaReciver::detect($message);
+                $event = MediaType::detect($message);
 
                 if (property_exists($message, $event)) {
                     $context = new Context(

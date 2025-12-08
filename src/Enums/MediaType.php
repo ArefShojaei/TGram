@@ -3,7 +3,7 @@
 namespace TGram\Enums;
 
 
-enum MediaReciver: string
+enum MediaType: string
 {
     case PHOTO = "photo";
 
