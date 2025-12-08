@@ -27,7 +27,9 @@ final class Telegram extends Bot implements ITelegram
                 "query" => ["offset" => $offset],
             ]);
 
-            $updates = json_decode($response->getBody())->result;
+            $updates = $response->result;
+
+            if (!count($updates)) continue;
 
             foreach ($updates as $update) {
                 $offset = $update->update_id + 1;
@@ -36,29 +38,60 @@ final class Telegram extends Bot implements ITelegram
                 $user = $message->from;
                 $chat = $message->chat;
 
-                /**
-                 ** Media handler
-                 */
-                if (!isset($update->text)) {
-                    if (!$this->fallback) {
-                        $this->fallback(
-                            fn(Context $ctx) => $ctx->reply(
-                                "Media not supported!",
-                            ),
-                        );
-                    }
-
-                    $event = MediaReciver::detect($message);
+                # Message handler
+                if (property_exists($message, "text")) {
+                    $input = $message->text;
 
                     $context = new Context(
                         update: new Update(
                             $message,
                             $user,
                             $chat,
-                            $update->event,
+                            $input,
                         ),
                         bot: $this,
                     );
+
+                    # Is Command
+                    if (str_starts_with($input, "/")) {
+                        $command = ltrim($input, "/");
+
+                        if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->reply("Command not found!"));
+
+                        $callback = $this->commands[$command] ?? $this->fallback;
+
+                        call_user_func($callback, $context);
+
+                        $this->fallback = null;
+                    }
+
+                    # Is Text
+                    if (!str_starts_with($input, "/")) {
+                        if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->reply("Error!"),);
+
+                        $callback = $this->hears[$input] ?? $this->fallback;
+
+                        call_user_func($callback, $context);
+
+                        $this->fallback = null;
+                    }
+                }
+
+                # Media Handler
+                $event = MediaReciver::detect($message);
+
+                if (property_exists($message, $event)) {
+                    $context = new Context(
+                        update: new Update(
+                            $message,
+                            $user,
+                            $chat,
+                            $message->{$event},
+                        ),
+                        bot: $this,
+                    );
+
+                    if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->reply("Command not found!"));
 
                     $callback = $this->events[$event] ?? $this->fallback;
 
@@ -66,51 +99,8 @@ final class Telegram extends Bot implements ITelegram
 
                     $this->fallback = null;
                 }
-
-                /**
-                 ** Message handler
-                 */
-                $context = new Context(
-                    update: new Update($message, $user, $chat, $update->text),
-                    bot: $this,
-                );
-
-                # Is Command
-                if (str_starts_with($update->text, "/")) {
-                    $command = ltrim($update->text, "/");
-
-                    if (!$this->fallback) {
-                        $this->fallback(
-                            fn(Context $ctx) => $ctx->reply(
-                                "Command not found!",
-                            ),
-                        );
-                    }
-
-                    $callback = $this->commands[$command] ?? $this->fallback;
-
-                    call_user_func($callback, $context);
-
-                    $this->fallback = null;
-                }
-
-                # Is Text
-                if (!str_starts_with($update->text, "/")) {
-                    if (!$this->fallback) {
-                        $this->fallback(
-                            fn(Context $ctx) => $ctx->reply("Error!"),
-                        );
-                    }
-
-                    $callback = $this->hears[$update->text] ?? $this->fallback;
-
-                    call_user_func($callback, $context);
-
-                    $this->fallback = null;
-                }
             }
 
-            # Repeat the loop
             $PER_ONE_SECOND = 1;
 
             sleep($PER_ONE_SECOND);
