@@ -9,6 +9,6 @@ final class Update
         public readonly object $message,
         public readonly object $user,
         public readonly object $chat,
-        public readonly ?string $input,
+        public readonly string|object|array $input,
     ) {}
 }
