@@ -4,12 +4,15 @@ namespace TGram;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use TGram\Abilities\{CanManageMessage, CanReceiveInformation, CanSendMedia};
 use TGram\Enums\HttpVerb;
 use TGram\Interfaces\Bot as IBot;
 
 
 class Bot implements IBot
 {
+    use CanSendMedia, CanManageMessage, CanReceiveInformation;
+
     private const API_BASE_URL = "https://api.telegram.org/bot";
 
     private Client $client;
@@ -37,39 +40,5 @@ class Bot implements IBot
                 "description" => $error->getMessage(),
             ];
         }
-    }
-
-    public function getMe(): object
-    {
-        return $this->request("getMe");
-    }
-
-    public function getUpdates(array $options = []): object
-    {
-        return $this->request(
-            endpoint: "getUpdates",
-            options: $options,
-        );
-    }
-
-    public function sendMessage(
-        int $chatId,
-        string $text,
-        array $options = [],
-    ): object {
-        $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "text" => $text,
-                "parse_mode" => "HTML",
-                ...$options,
-            ],
-        ];
-
-        return $this->request(
-            method: HttpVerb::CREATABLE,
-            endpoint: "sendMessage",
-            options: $body,
-        );
     }
 }
