@@ -2,6 +2,7 @@
 
 namespace TGram;
 
+use TGram\Utils\Console;
 use TGram\Abilities\HasListener;
 use TGram\DTO\Update;
 use TGram\Enums\{BotProcessMode, MediaType};
@@ -20,6 +21,8 @@ final class Telegram extends Bot implements ITelegram
 
     public function run(BotProcessMode $mode = BotProcessMode::POLLING): void
     {
+        echo Console::info("Bot is running...") . PHP_EOL;
+
         $offset = 0;
 
         while (true) {
