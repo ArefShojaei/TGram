@@ -3,7 +3,7 @@
 namespace TGram\Enums;
 
 
-enum HttpVerb: string
+enum HttpMethod: string
 {
     case READABLE = "get";
 

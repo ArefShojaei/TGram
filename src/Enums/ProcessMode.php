@@ -3,7 +3,7 @@
 namespace TGram\Enums;
 
 
-enum BotProcessMode: string
+enum ProcessMode: string
 {
     case WEBHOOK = "webhook";
 

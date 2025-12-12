@@ -4,14 +4,13 @@ namespace TGram;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use TGram\Abilities\{CanManageMessage, CanReceiveInformation, CanSendMedia};
-use TGram\Enums\HttpVerb;
-use TGram\Interfaces\Bot as IBot;
+use TGram\Abilities\CanReceiveInformation;
+use TGram\Enums\HttpMethod;
 
 
-class Bot implements IBot
+class Bot
 {
-    use CanSendMedia, CanManageMessage, CanReceiveInformation;
+    use CanReceiveInformation;
 
     private const API_BASE_URL = "https://api.telegram.org/bot";
 
@@ -25,21 +24,13 @@ class Bot implements IBot
         ]);
     }
 
-    private function request(
+    public function request(
+        HttpMethod $method,
         string $endpoint,
-        HttpVerb $method = HttpVerb::READABLE,
-        array $options = [],
+        array $params = [],
     ): object {
         try {
-            $body = $options;
-
-            if ($method === HttpVerb::CREATABLE) {
-                $body = [
-                    "form_params" => $options
-                ];
-            }
-
-            $response = $this->client->{$method->value}($endpoint, $body);
+            $response = $this->client->{$method->value}($endpoint, $params);
 
             return json_decode($response->getBody());
         } catch (RequestException $error) {

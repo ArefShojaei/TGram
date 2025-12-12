@@ -2,16 +2,16 @@
 
 namespace TGram;
 
+use TGram\Abilities\CanProvideListener;
 use TGram\Utils\Console;
-use TGram\Abilities\HasListener;
 use TGram\DTO\Update;
-use TGram\Enums\{BotProcessMode, MediaType};
+use TGram\Enums\{ProcessMode, MediaType};
 use TGram\Interfaces\Telegram as ITelegram;
 
 
 final class Telegram extends Bot implements ITelegram
 {
-    use HasListener;
+    use CanProvideListener;
 
 
     public function __construct(string $token)
@@ -19,7 +19,7 @@ final class Telegram extends Bot implements ITelegram
         parent::__construct($token);
     }
 
-    public function run(BotProcessMode $mode = BotProcessMode::POLLING): void
+    public function run(ProcessMode $mode = ProcessMode::POLLING): void
     {
         echo Console::info("Bot is running...") . PHP_EOL;
 
@@ -36,6 +36,8 @@ final class Telegram extends Bot implements ITelegram
 
             foreach ($updates as $update) {
                 $offset = $update->update_id + 1;
+
+                if (!property_exists($update, "message")) continue;
 
                 $message = $update->message;
                 $user = $message->from;
@@ -59,7 +61,7 @@ final class Telegram extends Bot implements ITelegram
                     if (str_starts_with($input, "/")) {
                         $command = ltrim($input, "/");
 
-                        if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->reply("Command not found!"));
+                        if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->sendMessage("Command not found!"));
 
                         $callback = $this->commands[$command] ?? $this->fallback;
 
@@ -70,7 +72,7 @@ final class Telegram extends Bot implements ITelegram
 
                     # Is Text
                     if (!str_starts_with($input, "/")) {
-                        if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->reply("Error!"),);
+                        if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->sendMessage("Error!"),);
 
                         $callback = $this->hears[$input] ?? $this->fallback;
 
@@ -80,7 +82,7 @@ final class Telegram extends Bot implements ITelegram
                     }
                 }
 
-                # Media Handler
+                // # Media Handler
                 $event = MediaType::detect($message);
 
                 if (property_exists($message, $event)) {
@@ -94,7 +96,7 @@ final class Telegram extends Bot implements ITelegram
                         bot: $this,
                     );
 
-                    if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->reply("Command not found!"));
+                    if (!$this->fallback) $this->fallback(fn(Context $ctx) => $ctx->sendMessage("Command not found!"));
 
                     $callback = $this->events[$event] ?? $this->fallback;
 

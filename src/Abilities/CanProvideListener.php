@@ -5,7 +5,7 @@ namespace TGram\Abilities;
 use TGram\Enums\MediaType;
 
 
-trait HasListener
+trait CanProvideListener
 {
     private array $commands = [];
 

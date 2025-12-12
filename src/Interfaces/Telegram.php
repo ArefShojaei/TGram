@@ -2,10 +2,10 @@
 
 namespace TGram\Interfaces;
 
-use TGram\Enums\BotProcessMode;
+use TGram\Enums\ProcessMode;
 
 
 interface Telegram
 {
-    public function run(BotProcessMode $mode = BotProcessMode::POLLING): void;
+    public function run(ProcessMode $mode = ProcessMode::POLLING): void;
 }

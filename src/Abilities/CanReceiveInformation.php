@@ -2,16 +2,25 @@
 
 namespace TGram\Abilities;
 
+use TGram\Enums\HttpMethod;
+
 
 trait CanReceiveInformation
 {
-    public function getMe(): object
+    protected function getMe(): object
     {
-        return $this->request("getMe");
+        return $this->request(
+            method: HttpMethod::READABLE,
+            endpoint: "getMe",
+        );
     }
 
-    public function getUpdates(array $options = []): object
+    protected function getUpdates(array $options = []): object
     {
-        return $this->request(endpoint: "getUpdates", options: $options);
+        return $this->request(
+            method: HttpMethod::READABLE,
+            endpoint: "getUpdates",
+            params: $options
+        );
     }
 }
