@@ -8,7 +8,7 @@ use TGram\Abilities\CanReceiveInformation;
 use TGram\Enums\HttpMethod;
 
 
-class Bot
+abstract class Bot
 {
     use CanReceiveInformation;
 
@@ -24,7 +24,7 @@ class Bot
         ]);
     }
 
-    public function request(
+    final public function request(
         HttpMethod $method,
         string $endpoint,
         array $params = [],
