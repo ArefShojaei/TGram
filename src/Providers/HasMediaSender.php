@@ -45,7 +45,6 @@ trait HasMediaSender
     }
 
     public function sendContact(
-        int|string $chat_id,
         string $phone_number,
         string $first_name,
         ?string $last_name = null,
@@ -58,7 +57,7 @@ trait HasMediaSender
     ): void {
         $body = [
             "form_params" => [
-                'chat_id'              => $chat_id,
+                'chat_id'              => $this->update->chat->id,
                 'phone_number'         => $phone_number,
                 'first_name'           => $first_name,
                 'last_name'            => $last_name,
@@ -79,11 +78,10 @@ trait HasMediaSender
     }
 
     public function sendPoll(
-        int|string $chat_id,
         string $question,
-        array $options, // آرایه از string
+        array $options,
         bool $is_anonymous = true,
-        string $type = "regular", // regular یا quiz
+        string $type = "regular",
         bool $allows_multiple_answers = false,
         ?int $correct_option_id = null,
         ?string $explanation = null,
@@ -99,7 +97,7 @@ trait HasMediaSender
     ): void {
         $body = [
             "form_params" => [
-                'chat_id'                   => $chat_id,
+                'chat_id'                   => $this->update->chat->id,
                 'question'                  => $question,
                 'options'                   => json_encode($options),
                 'is_anonymous'              => $is_anonymous,
