@@ -3,9 +3,9 @@
 namespace TGram\Enums;
 
 
-enum ProcessMode: string
+enum ProcessMode
 {
-    case WEBHOOK = "webhook";
+    case WEBHOOK;
 
-    case POLLING = "polling";
+    case POLLING;
 }
