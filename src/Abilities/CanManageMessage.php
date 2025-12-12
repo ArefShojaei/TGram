@@ -10,12 +10,10 @@ trait CanManageMessage
     public function sendMessage(int $chatId, string $text, array $options = []): object
     {
         $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "text" => $text,
-                "parse_mode" => "HTML",
-                ...$options,
-            ],
+            "chat_id" => $chatId,
+            "text" => $text,
+            "parse_mode" => "HTML",
+            ...$options
         ];
 
         return $this->request(
@@ -28,11 +26,9 @@ trait CanManageMessage
     public function deleteMessage(int $chatId, int $messageId, array $options = []): object
     {
         $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "message_id" => $messageId,
-                ...$options,
-            ],
+            "chat_id" => $chatId,
+            "message_id" => $messageId,
+            ...$options,
         ];
 
         return $this->request(

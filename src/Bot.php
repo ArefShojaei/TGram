@@ -31,7 +31,15 @@ class Bot implements IBot
         array $options = [],
     ): object {
         try {
-            $response = $this->client->{$method->value}($endpoint, $options);
+            $body = $options;
+
+            if ($method === HttpVerb::CREATABLE) {
+                $body = [
+                    "form_params" => $options
+                ];
+            }
+
+            $response = $this->client->{$method->value}($endpoint, $body);
 
             return json_decode($response->getBody());
         } catch (RequestException $error) {

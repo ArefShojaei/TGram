@@ -14,12 +14,10 @@ trait CanSendMedia
         array $options = [],
     ): object {
         $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "latitude" => $lat,
-                "longitude" => $lon,
-                ...$options,
-            ],
+            "chat_id" => $chatId,
+            "latitude" => $lat,
+            "longitude" => $lon,
+            ...$options,
         ];
 
         return $this->request(
@@ -36,12 +34,10 @@ trait CanSendMedia
         array $options = [],
     ): object {
         $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "phone_number" => $phone,
-                "first_name" => $firstName,
-                ...$options,
-            ],
+            "chat_id" => $chatId,
+            "phone_number" => $phone,
+            "first_name" => $firstName,
+            ...$options,
         ];
 
         return $this->request(
@@ -58,12 +54,10 @@ trait CanSendMedia
         array $options = [],
     ): object {
         $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "photo" => $src,
-                "caption" => $caption,
-                ...$options,
-            ],
+            "chat_id" => $chatId,
+            "photo" => $src,
+            "caption" => $caption,
+            ...$options,
         ];
 
         return $this->request(
@@ -80,12 +74,10 @@ trait CanSendMedia
         array $options = [],
     ): object {
         $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "audio" => $src,
-                "caption" => $caption,
-                ...$options,
-            ],
+            "chat_id" => $chatId,
+            "audio" => $src,
+            "caption" => $caption,
+            ...$options,
         ];
 
         return $this->request(
@@ -102,12 +94,10 @@ trait CanSendMedia
         array $options = [],
     ): object {
         $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "animation" => $src,
-                "caption" => $caption,
-                ...$options,
-            ],
+            "chat_id" => $chatId,
+            "animation" => $src,
+            "caption" => $caption,
+            ...$options,
         ];
 
         return $this->request(
@@ -123,11 +113,9 @@ trait CanSendMedia
         array $options = [],
     ): object {
         $body = [
-            "form_params" => [
-                "chat_id" => $chatId,
-                "sticker" => $src,
-                ...$options,
-            ],
+            "chat_id" => $chatId,
+            "sticker" => $src,
+            ...$options,
         ];
 
         return $this->request(
