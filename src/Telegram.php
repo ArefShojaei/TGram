@@ -3,14 +3,18 @@
 namespace TGram;
 
 use TGram\Interfaces\Telegram as ITelegram;
-use TGram\Abilities\{CanProvideListener, CanProvideProcessManager};
 use TGram\Enums\ProcessMode;
 use TGram\Utils\Console;
+use TGram\Abilities\{
+    CanProvideCommandManager,
+    CanProvideListener,
+    CanProvideProcessManager,
+};
 
 
 final class Telegram extends Bot implements ITelegram
 {
-    use CanProvideListener, CanProvideProcessManager;
+    use CanProvideListener, CanProvideProcessManager, CanProvideCommandManager;
 
 
     public function __construct(string $token)
@@ -22,8 +26,8 @@ final class Telegram extends Bot implements ITelegram
     {
         echo Console::info("Bot is running...") . PHP_EOL;
 
-        if ($mode !== ProcessMode::WEBHOOK) $this->runPolling();
-
-        $this->runWebhook();
+        $mode !== ProcessMode::WEBHOOK
+            ? $this->runPolling()
+            : $this->runWebhook();
     }
 }
