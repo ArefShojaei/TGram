@@ -3,12 +3,12 @@
 namespace TGram;
 
 use TGram\DTO\Update;
-use TGram\Providers\{HasMediaSender, HasMessageManager};
+use TGram\Providers\{HasChatManager, HasMediaSender, HasMessageManager};
 
 
 final class Context
 {
-    use HasMessageManager, HasMediaSender;
+    use HasMessageManager, HasMediaSender, HasChatManager;
 
     public function __construct(
         private readonly Update $update,
