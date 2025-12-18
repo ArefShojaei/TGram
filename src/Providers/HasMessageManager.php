@@ -26,7 +26,7 @@ trait HasMessageManager
                 "disable_notification" => $disable_notification,
                 "protect_content" => $protect_content,
                 "reply_to_message_id" => $reply_to_message_id,
-                "reply_markup" => $reply_markup,
+                "reply_markup" => $reply_markup ? json_encode($reply_markup) : null,
                 "message_thread_id" => $message_thread_id,
             ],
         ];
