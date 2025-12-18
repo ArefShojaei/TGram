@@ -2,7 +2,7 @@
 
 namespace TGram\Providers;
 
-use TGram\Enums\{HttpMethod, ChatAction, MediaType};
+use TGram\Enums\{HttpMethod, MediaType};
 
 
 trait HasMediaSender
@@ -152,22 +152,6 @@ trait HasMediaSender
         $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendVenue",
-            params: $body,
-        );
-    }
-
-    public function sendChatAction(ChatAction $action): void
-    {
-        $body = [
-            "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "action" => $action->value,
-            ],
-        ];
-
-        $this->bot->request(
-            method: HttpMethod::CREATABLE,
-            endpoint: "sendChatAction",
             params: $body,
         );
     }
