@@ -2,7 +2,6 @@
 
 namespace TGram\Interfaces;
 
-
 interface Console
 {
     public static function log(string $message): string;

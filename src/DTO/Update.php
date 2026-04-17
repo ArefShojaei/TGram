@@ -2,7 +2,6 @@
 
 namespace TGram\DTO;
 
-
 final class Update
 {
     public function __construct(

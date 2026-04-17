@@ -2,5 +2,4 @@
 
 namespace TGram\Interfaces;
 
-
 interface Context {}

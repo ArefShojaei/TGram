@@ -4,11 +4,12 @@ namespace TGram\Abilities;
 
 use TGram\Enums\{HttpMethod, Scope};
 
-
 trait CanProvideCommandManager
 {
-    public function setCommands(array $commands, Scope $scope = Scope::DEFAULT): ?object
-    {
+    public function setCommands(
+        array $commands,
+        Scope $scope = Scope::DEFAULT,
+    ): ?object {
         $body = [
             "json" => [
                 "commands" => $commands,

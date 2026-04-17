@@ -2,7 +2,6 @@
 
 namespace TGram\Enums;
 
-
 enum MediaType: string
 {
     case PHOTO = "photo";
@@ -28,7 +27,6 @@ enum MediaType: string
     case AUDIO = "audio";
 
     case GIFT = "animation";
-
 
     public static function detect(object $message): ?string
     {

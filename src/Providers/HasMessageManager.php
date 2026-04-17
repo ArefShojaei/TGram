@@ -4,7 +4,6 @@ namespace TGram\Providers;
 
 use TGram\Enums\{HttpMethod, ChatAction};
 
-
 trait HasMessageManager
 {
     public function sendMessage(

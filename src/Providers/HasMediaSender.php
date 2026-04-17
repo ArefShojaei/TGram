@@ -4,12 +4,10 @@ namespace TGram\Providers;
 
 use TGram\Enums\{HttpMethod, MediaType};
 
-
 trait HasMediaSender
 {
     use HasFileUploader;
 
-    
     public function sendLocation(
         float $latitude,
         float $longitude,

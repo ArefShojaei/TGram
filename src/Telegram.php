@@ -11,11 +11,9 @@ use TGram\Abilities\{
     CanProvideProcessManager,
 };
 
-
 final class Telegram extends Bot implements ITelegram
 {
     use CanProvideListener, CanProvideProcessManager, CanProvideCommandManager;
-
 
     public function __construct(string $token)
     {

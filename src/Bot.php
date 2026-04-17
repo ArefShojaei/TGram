@@ -7,7 +7,6 @@ use GuzzleHttp\Exception\RequestException;
 use TGram\Abilities\CanReceiveInformation;
 use TGram\Enums\HttpMethod;
 
-
 abstract class Bot
 {
     use CanReceiveInformation;
@@ -15,7 +14,6 @@ abstract class Bot
     private const API_BASE_URL = "https://api.telegram.org/bot";
 
     private Client $client;
-
 
     public function __construct(string $token)
     {

@@ -6,7 +6,6 @@ use TGram\Context;
 use TGram\DTO\Update;
 use TGram\Enums\MediaType;
 
-
 trait CanProvideProcessManager
 {
     private function runPolling(): void

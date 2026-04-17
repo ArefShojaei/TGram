@@ -2,7 +2,6 @@
 
 namespace TGram\Enums;
 
-
 enum Emoji: string
 {
     case STANDARD_DICE = "🎲";

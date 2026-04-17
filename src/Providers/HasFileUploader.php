@@ -4,7 +4,6 @@ namespace TGram\Providers;
 
 use TGram\Enums\{MediaType, HttpMethod};
 
-
 trait HasFileUploader
 {
     private function sendFile(
@@ -44,17 +43,16 @@ trait HasFileUploader
             [
                 "name" => $media->value,
                 "contents" => fopen($file, "r"),
-                "filename" => basename($file)
-            ]
+                "filename" => basename($file),
+            ],
         ];
 
         foreach ($body as $key => $value) {
             $multipart[] = [
                 "name" => $key,
-                "contents" => $value
+                "contents" => $value,
             ];
         }
-
 
         $this->bot->request(
             method: HttpMethod::CREATABLE,
@@ -75,7 +73,6 @@ trait HasFileUploader
         foreach ($body as $key => $value) {
             $payload[$key] = $value;
         }
-
 
         $this->bot->request(
             method: HttpMethod::CREATABLE,

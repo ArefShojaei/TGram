@@ -2,7 +2,6 @@
 
 namespace TGram\Enums\Console;
 
-
 enum Color: string
 {
     /**

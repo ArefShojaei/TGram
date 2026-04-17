@@ -5,7 +5,6 @@ namespace TGram\Utils;
 use TGram\Enums\Console\{Color, Label};
 use TGram\Interfaces\Console as IConsole;
 
-
 final class Console implements IConsole
 {
     public static function log(string $message): string

@@ -2,7 +2,6 @@
 
 namespace TGram\Enums;
 
-
 enum ChatAction: string
 {
     case TYPING = "typing";

@@ -4,7 +4,6 @@ namespace TGram\Abilities;
 
 use TGram\Enums\MediaType;
 
-
 trait CanProvideListener
 {
     private array $commands = [];
@@ -14,7 +13,6 @@ trait CanProvideListener
     private array $events = [];
 
     private ?object $fallback = null;
-
 
     public function command(string $command, callable $callback): void
     {

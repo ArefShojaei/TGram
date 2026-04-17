@@ -4,7 +4,6 @@ namespace TGram\Providers;
 
 use TGram\Enums\{HttpMethod, MediaType};
 
-
 trait HasChatManager
 {
     public function kickChatMember(bool $revoke_messages = true): void
