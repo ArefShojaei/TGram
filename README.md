@@ -1,3 +1,7 @@
+<div align="center">
+    <img src="docs/Logo.jpg" width="256" />
+</div>
+
 # PHP Telegram Bot
 A Powerful PHP library for making own Telegram bot easily!
 
@@ -16,4 +20,18 @@ $app->start(function(Context $ctx) {
 });
 
 $app->run();
+```
+
+## Installation
+Two ways for installing & using the library
+> Clone this repository
+```bash
+git clone https://github.com/ArefShojaei/TGram/TGram.git
+```
+
+OR
+
+> Composer installer
+```bash
+composer require arefshojaei/tgram
 ```
