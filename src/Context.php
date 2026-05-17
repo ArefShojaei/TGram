@@ -11,7 +11,7 @@ final class Context implements IContext
     use HasMessageManager, HasMediaSender, HasChatManager;
 
     public function __construct(
-        private readonly Update $update,
+        public readonly Update $update,
         private Bot $bot,
     ) {}
 }
