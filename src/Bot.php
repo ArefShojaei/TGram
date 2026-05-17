@@ -6,8 +6,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use TGram\Abilities\CanReceiveInformation;
 use TGram\Enums\HttpMethod;
+use TGram\Interfaces\Bot as IBot;
 
-abstract class Bot
+abstract class Bot implements IBot
 {
     use CanReceiveInformation;
 

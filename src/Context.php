@@ -3,9 +3,10 @@
 namespace TGram;
 
 use TGram\DTO\Update;
+use TGram\Interfaces\Context as IContext;
 use TGram\Providers\{HasChatManager, HasMediaSender, HasMessageManager};
 
-final class Context
+final class Context implements IContext
 {
     use HasMessageManager, HasMediaSender, HasChatManager;
 
