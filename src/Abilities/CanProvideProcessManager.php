@@ -2,6 +2,7 @@
 
 namespace TGram\Abilities;
 
+use TGram\Resolvers\CallbackResolver;
 use TGram\Resolvers\MessageResolver;
 
 trait CanProvideProcessManager
@@ -22,13 +23,17 @@ trait CanProvideProcessManager
             foreach ($updates as $update) {
                 $offset = $update->update_id + 1;
 
-                if (!property_exists($update, "message")) continue;
+                if (property_exists($update, "callback_query")) {
+                    $callbackResolver = new CallbackResolver($update, $this);
 
-                $message = $update->message;
+                    $callbackResolver->dispatch();
+                }
 
-                $resolver = new MessageResolver($message, $this);
+                if (property_exists($update, "message")) {
+                    $messageResolver = new MessageResolver($update, $this);
 
-                $resolver->dispatch();
+                    $messageResolver->dispatch();
+                }
             }
 
             $PER_ONE_SECOND = 1;

@@ -19,8 +19,8 @@ trait CanProvideListenerState
         return $this->events;
     }
 
-    public function getFallback(): ?object
+    public function getCallback(): ?object
     {
-        return $this->fallback;
+        return $this->callback;
     }
 }

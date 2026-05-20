@@ -15,43 +15,43 @@ trait CanProvideListener
 
     private array $events = [];
 
-    private ?object $fallback = null;
+    private ?object $callback = null;
 
-    public function command(string $command, Closure $callback): void
+    public function command(string $command, Closure $handler): void
     {
         $command = ltrim($command, "/");
 
         if (!isset($this->commands[$command])) {
-            $this->commands[$command] = $callback;
+            $this->commands[$command] = $handler;
         }
     }
 
-    public function hears(string $pattern, Closure $callback): void
+    public function hears(string $pattern, Closure $handler): void
     {
         if (!isset($this->hears[$pattern])) {
-            $this->hears[$pattern] = $callback;
+            $this->hears[$pattern] = $handler;
         }
     }
 
-    public function on(MediaType $event, Closure $callback): void
+    public function on(MediaType $event, Closure $handler): void
     {
         if (!isset($this->events[$event->value])) {
-            $this->events[$event->value] = $callback;
+            $this->events[$event->value] = $handler;
         }
     }
 
-    public function fallback(Closure $callback): void
+    public function callback(Closure $handler): void
     {
-        $this->fallback = $callback;
+        $this->callback = $handler;
     }
 
-    public function start(Closure $callback): void
+    public function start(Closure $handler): void
     {
-        $this->command("start", $callback);
+        $this->command("start", $handler);
     }
 
-    public function help(Closure $callback): void
+    public function help(Closure $handler): void
     {
-        $this->command("help", $callback);
+        $this->command("help", $handler);
     }
 }

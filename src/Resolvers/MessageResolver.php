@@ -20,15 +20,15 @@ final class MessageResolver implements Resolver
 
     private Context $context;
 
-    public function __construct(private object $message, private Bot $bot)
+    public function __construct(private object $update, private Bot $bot)
     {
         $this->context = new Context(
             update: new Update(
-                message: $this->message,
-                user: $this->message->from,
-                chat: $this->message->chat,
-                date: $this->message->date,
-                input: $this->message->text,
+                message: $this->update->message,
+                user: $this->update->message->from,
+                chat: $this->update->message->chat,
+                date: $this->update->message->date,
+                input: $this->update->message->text ?? null,
             ),
             bot: $this->bot,
         );
@@ -36,11 +36,11 @@ final class MessageResolver implements Resolver
 
     public function dispatch(): void
     {
-        $input = $this->message->text;
+        $input = $this->update->message->text ?? null;
 
         # Command message
         if (
-            property_exists($this->message, "text") &&
+            property_exists($this->update->message, "text") &&
             str_starts_with($input, "/")
         ) {
             $this->strategy = new CommandMessageStrategy(
@@ -51,7 +51,7 @@ final class MessageResolver implements Resolver
 
         # Text message
         if (
-            property_exists($this->message, "text") &&
+            property_exists($this->update->message, "text") &&
             !str_starts_with($input, "/")
         ) {
             $this->strategy = new TextMessageStrategy(
@@ -61,16 +61,16 @@ final class MessageResolver implements Resolver
         }
 
         # Media message
-        $event = MediaType::detect($this->message);
+        $event = MediaType::detect($this->update->message);
 
-        if (property_exists($this->message, $event)) {
+        if (property_exists($this->update->message, $event)) {
             $this->context = new Context(
                 update: new Update(
-                    $this->message,
-                    $this->message->user,
-                    $this->message->chat,
-                    $this->message->date,
-                    $this->message->message->{$event},
+                    message: $this->update->message,
+                    user: $this->update->message->from,
+                    chat: $this->update->message->chat,
+                    date: $this->update->message->date,
+                    input: $this->update->message->{$event},
                 ),
                 bot: $this->bot,
             );
