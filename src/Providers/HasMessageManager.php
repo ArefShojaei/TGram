@@ -201,4 +201,23 @@ trait HasMessageManager
             params: $body,
         );
     }
+
+    public function answerCallbackQuery(
+        ?string $text = null,
+        bool $showAlert = false,
+    ): void {
+        $body = [
+            "form_params" => [
+                "callback_query_id" => $this->update->callback_id,
+                "text" => $text,
+                "show_alert" => $showAlert,
+            ],
+        ];
+
+        $this->bot->request(
+            method: HttpMethod::CREATABLE,
+            endpoint: "answerCallbackQuery",
+            params: $body,
+        );
+    }
 }
