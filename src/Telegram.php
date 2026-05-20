@@ -5,6 +5,7 @@ namespace TGram;
 use TGram\Interfaces\Telegram as ITelegram;
 use TGram\Enums\ProcessMode;
 use TGram\Utils\Console;
+use TGram\Utils\Settings;
 use TGram\Abilities\{
     CanProvideCommandManager,
     CanProvideListener,
@@ -18,6 +19,11 @@ final class Telegram extends Bot implements ITelegram
     public function __construct(string $token)
     {
         parent::__construct($token);
+    }
+
+    public function configure(array $settings): void
+    {
+        Settings::set($settings);
     }
 
     public function run(ProcessMode $mode = ProcessMode::POLLING): void
