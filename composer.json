@@ -2,6 +2,8 @@
     "name": "arefshojaei/tgram",
     "description": "PHP Telegram Bot",
     "license": "MIT",
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "TGram\\": "src/"
