@@ -16,7 +16,7 @@ use TGram\Messages\{
 
 final class MessageResolver implements Resolver
 {
-    private ?MessageStrategy $strategy;
+    private ?MessageStrategy $strategy = null;
 
     private Context $context;
 
@@ -81,10 +81,6 @@ final class MessageResolver implements Resolver
             );
         }
 
-        if (!$this->strategy) {
-            throw new InvalidArgumentException();
-        }
-
-        $this->strategy->handle($this->context);
+        !is_null($this->strategy) && $this->strategy->handle($this->context);
     }
 }
