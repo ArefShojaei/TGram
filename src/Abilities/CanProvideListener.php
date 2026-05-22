@@ -15,9 +15,9 @@ trait CanProvideListener
 
     private array $events = [];
 
-    private ?object $callback = null;
+    private ?Closure $callback = null;
 
-    public function command(string $command, Closure $handler): void
+    public function command(string $command, Closure|array $handler): void
     {
         $command = ltrim($command, "/");
 
@@ -26,14 +26,14 @@ trait CanProvideListener
         }
     }
 
-    public function hears(string $pattern, Closure $handler): void
+    public function hears(string $pattern, Closure|array $handler): void
     {
         if (!isset($this->hears[$pattern])) {
             $this->hears[$pattern] = $handler;
         }
     }
 
-    public function on(MediaType $event, Closure $handler): void
+    public function on(MediaType $event, Closure|array $handler): void
     {
         if (!isset($this->events[$event->value])) {
             $this->events[$event->value] = $handler;
@@ -45,12 +45,12 @@ trait CanProvideListener
         $this->callback = $handler;
     }
 
-    public function start(Closure $handler): void
+    public function start(Closure|array $handler): void
     {
         $this->command("start", $handler);
     }
 
-    public function help(Closure $handler): void
+    public function help(Closure|array $handler): void
     {
         $this->command("help", $handler);
     }

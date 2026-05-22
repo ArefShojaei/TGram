@@ -3,14 +3,16 @@
 namespace TGram\Messages;
 
 use TGram\Context;
+use TGram\Executors\MessageExecutor;
 use TGram\Interfaces\Message\MessageStrategy;
 
-final class CallbackMessageStrategy implements MessageStrategy
+final class CallbackMessageStrategy extends MessageExecutor implements
+    MessageStrategy
 {
     public function __construct(private ?object $callback) {}
 
     public function handle(Context $context): void
     {
-        !is_null($this->callback) && call_user_func($this->callback, $context);
+        $this->execute($this->callback, $context);
     }
 }
