@@ -5,7 +5,7 @@ namespace TGram\Resolvers;
 use TGram\Bot;
 use TGram\Context;
 use TGram\DTO\Update;
-use TGram\Interfaces\{MessageResolver as Resolver, MessageStrategy};
+use TGram\Interfaces\Message\{MessageResolver as Resolver, MessageStrategy};
 use TGram\Messages\CallbackMessageStrategy;
 
 final class CallbackResolver implements Resolver

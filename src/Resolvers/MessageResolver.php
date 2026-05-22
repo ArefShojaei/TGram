@@ -7,7 +7,7 @@ use TGram\Bot;
 use TGram\Context;
 use TGram\DTO\Update;
 use TGram\Enums\MediaType;
-use TGram\Interfaces\{MessageResolver as Resolver, MessageStrategy};
+use TGram\Interfaces\Message\{MessageResolver as Resolver, MessageStrategy};
 use TGram\Messages\{
     CommandMessageStrategy,
     MediaMessageStrategy,
