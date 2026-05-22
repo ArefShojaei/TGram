@@ -3,7 +3,7 @@
     "description": "PHP Telegram Bot",
     "license": "MIT",
     "prefer-stable": true,
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "TGram\\": "src/"
