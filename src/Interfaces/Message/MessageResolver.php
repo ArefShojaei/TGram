@@ -1,6 +1,6 @@
 <?php
 
-namespace TGram\Interfaces;
+namespace TGram\Interfaces\Message;
 
 interface MessageResolver
 {

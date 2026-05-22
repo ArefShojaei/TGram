@@ -3,7 +3,7 @@
 namespace TGram\Messages;
 
 use TGram\Context;
-use TGram\Interfaces\MessageStrategy;
+use TGram\Interfaces\Message\MessageStrategy;
 
 final class CallbackMessageStrategy implements MessageStrategy
 {
