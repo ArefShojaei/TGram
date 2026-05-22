@@ -3,8 +3,13 @@
 namespace TGram\Interfaces;
 
 use TGram\Enums\ProcessMode;
+use TGram\Interfaces\Command\{
+    CommandListener,
+    CommandListenerState,
+    CommandManager,
+};
 
-interface Telegram
+interface Telegram extends CommandManager, CommandListener, CommandListenerState
 {
     public function configure(array $settings): void;
 
