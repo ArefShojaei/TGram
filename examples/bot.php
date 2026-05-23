@@ -3,7 +3,7 @@
 require_once dirname(__DIR__) . "/vendor/autoload.php";
 
 use TGram\{Telegram, Context};
-
+use TGram\Utils\Keyboard\{Keyboard, Button};
 
 $app = new Telegram("TOKEN");
 
@@ -25,17 +25,7 @@ Welcome to <b>TGram</b> bot 🚀
 https://github.com/ArefShojaei/TGram
     ";
 
-    $keyboard = [
-        "keyboard" => [
-            [
-                [
-                    "text" => "🤖 Github",
-                ],
-            ],
-        ],
-        "resize_keyboard" => true,
-        "one_time_keyboard" => true,
-    ];
+    $keyboard = Keyboard::reply()->row(Button::text("🤖 Github"))->toArray();
 
     $context->sendMessage($message, reply_markup: $keyboard);
 });
@@ -43,20 +33,12 @@ https://github.com/ArefShojaei/TGram
 $app->hears("🤖 Github", function (Context $context) {
     $message = "Github information";
 
-    $keyboard = [
-        "inline_keyboard" => [
-            [
-                [
-                    "text" => "Developer",
-                    "url" => "https://github.com/ArefShojaei",
-                ],
-                [
-                    "text" => "Repository",
-                    "url" => "https://github.com/ArefShojaei/TGram",
-                ],
-            ],
-        ],
-    ];
+    $keyboard = Keyboard::inline()
+        ->row(
+            Button::url("Developer", "https://github.com/ArefShojaei"),
+            Button::url("Repository", "https://github.com/ArefShojaei/TGram"),
+        )
+        ->toArray();
 
     $context->sendMessage($message, reply_markup: $keyboard);
 });
