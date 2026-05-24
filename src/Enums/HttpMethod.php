@@ -8,7 +8,7 @@ enum HttpMethod: string
 
     case CREATABLE = "post";
 
-    case UPDATEABLE = "put";
+    case UPDATABLE = "put";
 
     case EDITABLE = "path";
 
