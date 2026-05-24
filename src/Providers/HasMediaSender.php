@@ -493,4 +493,20 @@ trait HasMediaSender
 
         $this->sendFile("sendSticker", $sticker, MediaType::STICKER, $body);
     }
+
+    public function sendMediaGroup(array $media): void
+    {
+        $body = [
+            "form_params" => [
+                "chat_id" => $this->update->chat->id,
+                "media" => json_encode($media),
+            ],
+        ];
+
+        $this->bot->request(
+            method: HttpMethod::CREATABLE,
+            endpoint: "sendMediaGroup",
+            params: $body,
+        );
+    }
 }
