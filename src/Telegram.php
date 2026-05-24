@@ -10,11 +10,15 @@ use TGram\Abilities\{
     CanProvideCommandManager,
     CanProvideListener,
     CanProvideProcessManager,
+    CanProvideWebhookSystem,
 };
 
 final class Telegram extends Bot implements ITelegram
 {
-    use CanProvideListener, CanProvideProcessManager, CanProvideCommandManager;
+    use CanProvideListener,
+        CanProvideProcessManager,
+        CanProvideCommandManager,
+        CanProvideWebhookSystem;
 
     public function __construct(string $token)
     {
