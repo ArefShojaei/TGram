@@ -40,7 +40,9 @@ final class CallbackResolver extends MiddlewareExecutor implements Resolver
         parent::__construct($this->context, $this->bot->getMiddlewares());
 
         is_null($this->next)
-            ? $this->strategy->handle($this->context)
-            : $this->next && $this->strategy->handle($this->context);
+            ? # Run without middlewares
+            $this->strategy->handle($this->context)
+            : # Run with middlewares
+                $this->next && $this->strategy->handle($this->context);
     }
 }
