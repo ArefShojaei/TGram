@@ -2,6 +2,7 @@
 
 namespace TGram;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use TGram\Abilities\CanReceiveInformation;
@@ -26,16 +27,17 @@ abstract class Bot implements IBot
     final public function request(
         HttpMethod $method,
         string $endpoint,
-        array $params = [],
+        array $params = []
     ): object {
         try {
             $response = $this->client->{$method->value}($endpoint, $params);
 
             return json_decode($response->getBody());
-        } catch (RequestException $error) {
+        } catch (RequestException | Exception $error) {
             return (object) [
                 "ok" => false,
                 "description" => $error->getMessage(),
+                "error_code" => $error->getCode(),
             ];
         }
     }

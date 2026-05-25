@@ -12,6 +12,7 @@ use TGram\Abilities\{
     CanProvideProcessManager,
     CanProvideWebhookSystem,
 };
+use TGram\Exceptions\InvalidTokenException;
 
 final class Telegram extends Bot implements ITelegram
 {
@@ -22,6 +23,8 @@ final class Telegram extends Bot implements ITelegram
 
     public function __construct(string $token)
     {
+        if (!isset($token) or !strlen($token)) throw new InvalidTokenException;
+
         parent::__construct($token);
     }
 
