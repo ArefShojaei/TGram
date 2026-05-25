@@ -14,6 +14,16 @@ final class Button implements KeyboardButton
         ];
     }
 
+    public static function login(string $text, string $address): array
+    {
+        return [
+            "text" => $text,
+            "login_url" => [
+                "url" => $address
+            ],
+        ];
+    }
+
     public static function text(string $text): array
     {
         return [
