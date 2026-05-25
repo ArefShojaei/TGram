@@ -84,9 +84,11 @@ final class MessageResolver extends MiddlewareExecutor implements Resolver
         parent::__construct($this->context, $this->bot->getMiddlewares());
 
         is_null($this->next)
-            ? !is_null($this->strategy) &&
+            ? # Run without middlewares
+                !is_null($this->strategy) &&
                 $this->strategy->handle($this->context)
-            : $this->next &&
+            : # Run with middlewares
+                $this->next &&
                 !is_null($this->strategy) &&
                 $this->strategy->handle($this->context);
     }
