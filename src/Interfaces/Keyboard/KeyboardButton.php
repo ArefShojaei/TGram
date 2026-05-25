@@ -6,6 +6,8 @@ interface KeyboardButton
 {
     public static function url(string $text, string $address): array;
 
+    public static function login(string $text, string $address): array;
+
     public static function text(string $text): array;
 
     public static function callback(string $text, mixed $data): array;
