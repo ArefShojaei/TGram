@@ -10,7 +10,7 @@ final class Update
         public readonly object $chat,
         public readonly int $date,
         public readonly string|object|array|null $input,
-        public readonly mixed $callback_data = null,
-        public readonly ?int $callback_id = null,
+        public readonly mixed $callback_query_data = null,
+        public readonly ?int $callback_query_id = null,
     ) {}
 }
