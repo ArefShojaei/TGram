@@ -11,6 +11,7 @@ interface HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
+        ?int $message_thread_id = null,
         ?array $reply_markup = null
     ): object;
 
@@ -18,9 +19,11 @@ interface HasMediaSender
         string $phone_number,
         string $first_name,
         ?string $last_name = null,
+        ?string $vcard = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
+        ?int $message_thread_id = null,
         ?array $reply_markup = null
     ): object;
 
@@ -32,12 +35,14 @@ interface HasMediaSender
         bool $allows_multiple_answers = false,
         ?int $correct_option_id = null,
         ?string $explanation = null,
-        ?string $explanation_parse_mode = "HTML",
+        ?string $explanation_parse_mode = null,
+        ?array $explanation_entities = null,
         ?int $open_period = null,
         ?int $close_date = null,
         bool $is_closed = false,
         bool $disable_notification = false,
         bool $protect_content = false,
+        ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null
     ): object;
@@ -53,6 +58,7 @@ interface HasMediaSender
         ?string $google_place_type = null,
         bool $disable_notification = false,
         bool $protect_content = false,
+        ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null
     ): object;
@@ -69,7 +75,7 @@ interface HasMediaSender
         ?int $photo_size = null,
         ?int $photo_width = null,
         ?int $photo_height = null,
-        ?string $suggested_tip_amounts = null,
+        ?array $suggested_tip_amounts = null,
         ?string $start_parameter = null,
         bool $need_name = false,
         bool $need_phone_number = false,
@@ -94,6 +100,7 @@ interface HasMediaSender
         bool $has_spoiler = false,
         bool $disable_notification = false,
         bool $protect_content = false,
+        ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null,
         ?int $direct_messages_topic_id = null,
@@ -162,7 +169,7 @@ interface HasMediaSender
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
         ?string $message_effect_id = null,
-        ?int $start_timestamp = null,
+        ?int $start_timestamp = null
     ): object;
 
     public function sendAnimation(
@@ -200,5 +207,59 @@ interface HasMediaSender
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
         ?string $message_effect_id = null
+    ): object;
+
+    public function sendVoice(
+        string $voice,
+        ?string $caption = null,
+        ?string $parse_mode = "HTML",
+        ?array $caption_entities = null,
+        ?int $duration = null,
+        bool $disable_notification = false,
+        bool $protect_content = false,
+        ?int $message_thread_id = null,
+        ?int $reply_to_message_id = null,
+        ?array $reply_markup = null,
+        ?string $business_connection_id = null,
+        ?string $message_effect_id = null
+    ): object;
+
+    public function sendVideoNote(
+        string $video_note,
+        ?int $duration = null,
+        ?int $length = null,
+        bool $disable_notification = false,
+        bool $protect_content = false,
+        ?int $message_thread_id = null,
+        ?int $reply_to_message_id = null,
+        ?array $reply_markup = null,
+        ?string $business_connection_id = null,
+        ?string $message_effect_id = null
+    ): object;
+
+    public function sendMediaGroup(
+        array $media,
+        bool $disable_notification = false,
+        bool $protect_content = false,
+        ?int $message_thread_id = null,
+        ?int $reply_to_message_id = null,
+        ?string $business_connection_id = null
+    ): object;
+
+    public function sendDice(
+        ?string $emoji = "🎲",
+        bool $disable_notification = false,
+        bool $protect_content = false,
+        ?int $message_thread_id = null,
+        ?int $reply_to_message_id = null,
+        ?array $reply_markup = null,
+        ?string $business_connection_id = null,
+        ?string $message_effect_id = null
+    ): object;
+
+    public function setReaction(
+        int $message_id,
+        ?array $reaction = null,
+        bool $is_big = false
     ): object;
 }

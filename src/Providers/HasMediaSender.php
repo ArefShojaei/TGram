@@ -3,9 +3,16 @@
 namespace TGram\Providers;
 
 use TGram\Enums\{HttpMethod, MediaType};
+use TGram\Exceptions\ValidationException;
 
 trait HasMediaSender
 {
+    private const LATITUDE_MIN = -90;
+    private const LATITUDE_MAX = 90;
+
+    private const LONGITUDE_MIN = -180;
+    private const LONGITUDE_MAX = 180;
+
     use HasFileUploader;
 
     public function sendLocation(
@@ -15,8 +22,30 @@ trait HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
+        ?int $message_thread_id = null,
         ?array $reply_markup = null
     ): object {
+        if (!is_numeric($latitude) || !is_numeric($longitude)) {
+            throw new ValidationException(
+                "Latitude and Longitude must be numeric",
+            );
+        }
+
+        if ($latitude < self::LATITUDE_MIN || $latitude > self::LATITUDE_MAX) {
+            throw new ValidationException(
+                "Latitude must be between -90 and 90",
+            );
+        }
+
+        if (
+            $longitude < self::LONGITUDE_MIN ||
+            $longitude > self::LONGITUDE_MAX
+        ) {
+            throw new ValidationException(
+                "Longitude must be between -180 and 180",
+            );
+        }
+
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -26,7 +55,10 @@ trait HasMediaSender
                 "disable_notification" => $disable_notification,
                 "protect_content" => $protect_content,
                 "reply_to_message_id" => $reply_to_message_id,
-                "reply_markup" => $reply_markup,
+                "message_thread_id" => $message_thread_id,
+                "reply_markup" => $reply_markup
+                    ? json_encode($reply_markup)
+                    : null,
             ],
         ];
 
@@ -41,21 +73,35 @@ trait HasMediaSender
         string $phone_number,
         string $first_name,
         ?string $last_name = null,
+        ?string $vcard = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
+        ?int $message_thread_id = null,
         ?array $reply_markup = null
     ): object {
+        if (empty(trim($phone_number))) {
+            throw new ValidationException("Phone number cannot be empty");
+        }
+
+        if (empty(trim($first_name))) {
+            throw new ValidationException("First name cannot be empty");
+        }
+
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
                 "phone_number" => $phone_number,
                 "first_name" => $first_name,
                 "last_name" => $last_name,
+                "vcard" => $vcard,
                 "disable_notification" => $disable_notification,
                 "protect_content" => $protect_content,
                 "reply_to_message_id" => $reply_to_message_id,
-                "reply_markup" => $reply_markup,
+                "message_thread_id" => $message_thread_id,
+                "reply_markup" => $reply_markup
+                    ? json_encode($reply_markup)
+                    : null,
             ],
         ];
 
@@ -74,15 +120,42 @@ trait HasMediaSender
         bool $allows_multiple_answers = false,
         ?int $correct_option_id = null,
         ?string $explanation = null,
-        ?string $explanation_parse_mode = "HTML",
+        ?string $explanation_parse_mode = null,
+        ?array $explanation_entities = null,
         ?int $open_period = null,
         ?int $close_date = null,
         bool $is_closed = false,
         bool $disable_notification = false,
         bool $protect_content = false,
+        ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null
     ): object {
+        if (empty(trim($question))) {
+            throw new ValidationException("Poll question cannot be empty");
+        }
+
+        if (count($options) < 2) {
+            throw new ValidationException("Poll must have at least 2 options");
+        }
+
+        if (count($options) > 10) {
+            throw new ValidationException(
+                "Poll cannot have more than 10 options",
+            );
+        }
+
+        // ✅ Validate option content
+        foreach ($options as $option) {
+            if (is_string($option)) {
+                if (empty(trim($option))) {
+                    throw new ValidationException(
+                        "Poll option cannot be empty",
+                    );
+                }
+            }
+        }
+
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -94,11 +167,15 @@ trait HasMediaSender
                 "correct_option_id" => $correct_option_id,
                 "explanation" => $explanation,
                 "explanation_parse_mode" => $explanation_parse_mode,
+                "explanation_entities" => $explanation_entities
+                    ? json_encode($explanation_entities)
+                    : null,
                 "open_period" => $open_period,
                 "close_date" => $close_date,
                 "is_closed" => $is_closed,
                 "disable_notification" => $disable_notification,
                 "protect_content" => $protect_content,
+                "message_thread_id" => $message_thread_id,
                 "reply_to_message_id" => $reply_to_message_id,
                 "reply_markup" => $reply_markup
                     ? json_encode($reply_markup)
@@ -124,9 +201,24 @@ trait HasMediaSender
         ?string $google_place_type = null,
         bool $disable_notification = false,
         bool $protect_content = false,
+        ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null
     ): object {
+        if (!is_numeric($latitude) || !is_numeric($longitude)) {
+            throw new ValidationException(
+                "Latitude and Longitude must be numeric",
+            );
+        }
+
+        if (empty(trim($title))) {
+            throw new ValidationException("Venue title cannot be empty");
+        }
+
+        if (empty(trim($address))) {
+            throw new ValidationException("Venue address cannot be empty");
+        }
+
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -140,6 +232,7 @@ trait HasMediaSender
                 "google_place_type" => $google_place_type,
                 "disable_notification" => $disable_notification,
                 "protect_content" => $protect_content,
+                "message_thread_id" => $message_thread_id,
                 "reply_to_message_id" => $reply_to_message_id,
                 "reply_markup" => $reply_markup
                     ? json_encode($reply_markup)
@@ -166,7 +259,7 @@ trait HasMediaSender
         ?int $photo_size = null,
         ?int $photo_width = null,
         ?int $photo_height = null,
-        ?string $suggested_tip_amounts = null,
+        ?array $suggested_tip_amounts = null,
         ?string $start_parameter = null,
         bool $need_name = false,
         bool $need_phone_number = false,
@@ -181,6 +274,18 @@ trait HasMediaSender
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null
     ): object {
+        if (empty(trim($title))) {
+            throw new ValidationException("Invoice title cannot be empty");
+        }
+
+        if (empty($prices) || !is_array($prices)) {
+            throw new ValidationException("Prices must be a non-empty array");
+        }
+
+        if (empty(trim($currency))) {
+            throw new ValidationException("Currency cannot be empty");
+        }
+
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -195,7 +300,9 @@ trait HasMediaSender
                 "photo_size" => $photo_size,
                 "photo_width" => $photo_width,
                 "photo_height" => $photo_height,
-                "suggested_tip_amounts" => $suggested_tip_amounts,
+                "suggested_tip_amounts" => $suggested_tip_amounts
+                    ? json_encode($suggested_tip_amounts)
+                    : null,
                 "start_parameter" => $start_parameter,
                 "need_name" => $need_name,
                 "need_phone_number" => $need_phone_number,
@@ -230,6 +337,7 @@ trait HasMediaSender
         bool $has_spoiler = false,
         bool $disable_notification = false,
         bool $protect_content = false,
+        ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null,
         ?int $direct_messages_topic_id = null,
@@ -239,7 +347,6 @@ trait HasMediaSender
         ?string $message_effect_id = null
     ): object {
         $body = [
-            "chat_id" => $this->update->chat->id,
             "caption" => $caption,
             "parse_mode" => $parse_mode,
             "caption_entities" => $caption_entities
@@ -249,6 +356,7 @@ trait HasMediaSender
             "has_spoiler" => $has_spoiler,
             "disable_notification" => $disable_notification,
             "protect_content" => $protect_content,
+            "message_thread_id" => $message_thread_id,
             "reply_to_message_id" => $reply_to_message_id,
             "reply_markup" => $reply_markup ? json_encode($reply_markup) : null,
             "direct_messages_topic_id" => $direct_messages_topic_id,
@@ -283,7 +391,6 @@ trait HasMediaSender
         ?string $message_effect_id = null
     ): object {
         $body = [
-            "chat_id" => $this->update->chat->id,
             "caption" => $caption,
             "parse_mode" => $parse_mode,
             "caption_entities" => $caption_entities
@@ -327,7 +434,6 @@ trait HasMediaSender
         ?string $message_effect_id = null
     ): object {
         $body = [
-            "chat_id" => $this->update->chat->id,
             "caption" => $caption,
             "parse_mode" => $parse_mode,
             "caption_entities" => $caption_entities
@@ -380,7 +486,6 @@ trait HasMediaSender
         ?int $start_timestamp = null
     ): object {
         $body = [
-            "chat_id" => $this->update->chat->id,
             "duration" => $duration,
             "width" => $width,
             "height" => $height,
@@ -432,7 +537,6 @@ trait HasMediaSender
         ?string $message_effect_id = null
     ): object {
         $body = [
-            "chat_id" => $this->update->chat->id,
             "duration" => $duration,
             "width" => $width,
             "height" => $height,
@@ -480,7 +584,6 @@ trait HasMediaSender
         ?string $message_effect_id = null
     ): object {
         $body = [
-            "chat_id" => $this->update->chat->id,
             "emoji" => $emoji,
             "disable_notification" => $disable_notification,
             "protect_content" => $protect_content,
@@ -504,18 +607,158 @@ trait HasMediaSender
         );
     }
 
-    public function sendMediaGroup(array $media): object
-    {
+    public function sendVoice(
+        string $voice,
+        ?string $caption = null,
+        ?string $parse_mode = "HTML",
+        ?array $caption_entities = null,
+        ?int $duration = null,
+        bool $disable_notification = false,
+        bool $protect_content = false,
+        ?int $message_thread_id = null,
+        ?int $reply_to_message_id = null,
+        ?array $reply_markup = null,
+        ?string $business_connection_id = null,
+        ?string $message_effect_id = null
+    ): object {
+        $body = [
+            "caption" => $caption,
+            "parse_mode" => $parse_mode,
+            "caption_entities" => $caption_entities
+                ? json_encode($caption_entities)
+                : null,
+            "duration" => $duration,
+            "disable_notification" => $disable_notification,
+            "protect_content" => $protect_content,
+            "message_thread_id" => $message_thread_id,
+            "reply_to_message_id" => $reply_to_message_id,
+            "reply_markup" => $reply_markup ? json_encode($reply_markup) : null,
+            "business_connection_id" => $business_connection_id,
+            "message_effect_id" => $message_effect_id,
+        ];
+
+        return $this->sendFile("sendVoice", $voice, MediaType::VOICE, $body);
+    }
+
+    public function sendVideoNote(
+        string $video_note,
+        ?int $duration = null,
+        ?int $length = null,
+        bool $disable_notification = false,
+        bool $protect_content = false,
+        ?int $message_thread_id = null,
+        ?int $reply_to_message_id = null,
+        ?array $reply_markup = null,
+        ?string $business_connection_id = null,
+        ?string $message_effect_id = null
+    ): object {
+        $body = [
+            "duration" => $duration,
+            "length" => $length,
+            "disable_notification" => $disable_notification,
+            "protect_content" => $protect_content,
+            "message_thread_id" => $message_thread_id,
+            "reply_to_message_id" => $reply_to_message_id,
+            "reply_markup" => $reply_markup ? json_encode($reply_markup) : null,
+            "business_connection_id" => $business_connection_id,
+            "message_effect_id" => $message_effect_id,
+        ];
+
+        return $this->sendFile(
+            "sendVideoNote",
+            $video_note,
+            MediaType::VOICE_NOTE,
+            $body,
+        );
+    }
+
+    public function sendMediaGroup(
+        array $media,
+        bool $disable_notification = false,
+        bool $protect_content = false,
+        ?int $message_thread_id = null,
+        ?int $reply_to_message_id = null,
+        ?string $business_connection_id = null
+    ): object {
+        if (empty($media)) {
+            throw new ValidationException("Media array cannot be empty");
+        }
+
+        if (count($media) < 2) {
+            throw new ValidationException(
+                "Media group must have at least 2 items",
+            );
+        }
+
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
                 "media" => json_encode($media),
+                "disable_notification" => $disable_notification,
+                "protect_content" => $protect_content,
+                "message_thread_id" => $message_thread_id,
+                "reply_to_message_id" => $reply_to_message_id,
+                "business_connection_id" => $business_connection_id,
             ],
         ];
 
         return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendMediaGroup",
+            params: $body,
+        );
+    }
+
+    public function sendDice(
+        ?string $emoji = "🎲",
+        bool $disable_notification = false,
+        bool $protect_content = false,
+        ?int $message_thread_id = null,
+        ?int $reply_to_message_id = null,
+        ?array $reply_markup = null,
+        ?string $business_connection_id = null,
+        ?string $message_effect_id = null
+    ): object {
+        $body = [
+            "form_params" => [
+                "chat_id" => $this->update->chat->id,
+                "emoji" => $emoji,
+                "disable_notification" => $disable_notification,
+                "protect_content" => $protect_content,
+                "message_thread_id" => $message_thread_id,
+                "reply_to_message_id" => $reply_to_message_id,
+                "reply_markup" => $reply_markup
+                    ? json_encode($reply_markup)
+                    : null,
+                "business_connection_id" => $business_connection_id,
+                "message_effect_id" => $message_effect_id,
+            ],
+        ];
+
+        return $this->bot->request(
+            method: HttpMethod::CREATABLE,
+            endpoint: "sendDice",
+            params: $body,
+        );
+    }
+
+    public function setReaction(
+        int $message_id,
+        ?array $reaction = null,
+        bool $is_big = false
+    ): object {
+        $body = [
+            "form_params" => [
+                "chat_id" => $this->update->chat->id,
+                "message_id" => $message_id,
+                "reaction" => $reaction ? json_encode($reaction) : null,
+                "is_big" => $is_big,
+            ],
+        ];
+
+        return $this->bot->request(
+            method: HttpMethod::CREATABLE,
+            endpoint: "setMessageReaction",
             params: $body,
         );
     }
