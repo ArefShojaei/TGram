@@ -111,7 +111,6 @@ interface HasMediaSender
         ?int $duration = null,
         ?string $performer = null,
         ?string $title = null,
-        ?string $thumbnail = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $message_thread_id = null,
@@ -126,7 +125,6 @@ interface HasMediaSender
 
     public function sendDocument(
         string $document,
-        ?string $thumbnail = null,
         ?string $caption = null,
         ?string $parse_mode = "HTML",
         ?array $caption_entities = null,
@@ -148,7 +146,6 @@ interface HasMediaSender
         ?int $duration = null,
         ?int $width = null,
         ?int $height = null,
-        ?string $thumbnail = null,
         ?string $caption = null,
         ?string $parse_mode = "HTML",
         ?array $caption_entities = null,
@@ -166,7 +163,6 @@ interface HasMediaSender
         ?bool $allow_paid_broadcast = null,
         ?string $message_effect_id = null,
         ?int $start_timestamp = null,
-        ?string $cover = null
     ): object;
 
     public function sendAnimation(
@@ -174,7 +170,6 @@ interface HasMediaSender
         ?int $duration = null,
         ?int $width = null,
         ?int $height = null,
-        ?string $thumbnail = null,
         ?string $caption = null,
         ?string $parse_mode = "HTML",
         ?array $caption_entities = null,
