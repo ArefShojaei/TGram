@@ -10,7 +10,7 @@ trait CanProvideWebhookSystem
         string $url,
         ?string $secretToken = null,
         ?array $allowedUpdates = null,
-    ): void {
+    ): object {
         $params = [
             "url" => $url,
         ];
@@ -27,14 +27,14 @@ trait CanProvideWebhookSystem
             "form_params" => $params,
         ];
 
-        $this->request(
+        return $this->request(
             method: HttpMethod::CREATABLE,
             endpoint: "setWebhook",
             params: $body,
         );
     }
 
-    public function deleteWebhook(bool $dropPendingUpdates = false): void
+    public function deleteWebhook(bool $dropPendingUpdates = false): object
     {
         $body = [
             "form_params" => [
@@ -42,7 +42,7 @@ trait CanProvideWebhookSystem
             ],
         ];
 
-        $this->request(
+        return $this->request(
             method: HttpMethod::DELETABLE,
             endpoint: "deleteWebhook",
             params: $body,
@@ -60,7 +60,7 @@ trait CanProvideWebhookSystem
     public function setChatMenuButton(
         ?int $chatId = null,
         ?array $menuButton = null,
-    ): void {
+    ): object {
         $params = [];
 
         if ($chatId !== null) {
@@ -75,7 +75,7 @@ trait CanProvideWebhookSystem
             "form_params" => $params,
         ];
 
-        $this->request(
+        return $this->request(
             method: HttpMethod::UPDATABLE,
             endpoint: "setChatMenuButton",
             params: $body,
@@ -85,7 +85,7 @@ trait CanProvideWebhookSystem
     public function setMyDefaultAdministratorRights(
         array $rights,
         bool $forChannels = false,
-    ): void {
+    ): object {
         $body = [
             "form_params" => [
                 "rights" => json_encode($rights),
@@ -93,7 +93,7 @@ trait CanProvideWebhookSystem
             ],
         ];
 
-        $this->request(
+        return $this->request(
             method: HttpMethod::UPDATABLE,
             endpoint: "setMyDefaultAdministratorRights",
             params: $body,

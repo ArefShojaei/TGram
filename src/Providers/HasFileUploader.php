@@ -10,35 +10,21 @@ trait HasFileUploader
         string $endpoint,
         string $file,
         MediaType $media,
-        array $body,
-        ?string $thumbnail = null,
-    ): void {
+        array $body
+    ): object {
         $isLocalFile = file_exists($file);
 
-        $isLocalFile
-            ? $this->sendInternalFile(
-                $endpoint,
-                $file,
-                $media,
-                $body,
-                $thumbnail,
-            )
-            : $this->sendExternalFile(
-                $endpoint,
-                $file,
-                $media,
-                $body,
-                $thumbnail,
-            );
+        return $isLocalFile
+            ? $this->sendInternalFile($endpoint, $file, $media, $body)
+            : $this->sendExternalFile($endpoint, $file, $media, $body);
     }
 
     private function sendInternalFile(
         string $endpoint,
         string $file,
         MediaType $media,
-        array $body,
-        ?string $thumbnail = null,
-    ): void {
+        array $body
+    ): object {
         $multipart = [
             [
                 "name" => $media->value,
@@ -54,7 +40,7 @@ trait HasFileUploader
             ];
         }
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: $endpoint,
             params: ["multipart" => $multipart],
@@ -65,16 +51,15 @@ trait HasFileUploader
         string $endpoint,
         string $file,
         MediaType $media,
-        array $body,
-        ?string $thumbnail = null,
-    ): void {
+        array $body
+    ): object {
         $payload = [$media->value => $file];
 
         foreach ($body as $key => $value) {
             $payload[$key] = $value;
         }
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: $endpoint,
             params: ["form_params" => $payload],

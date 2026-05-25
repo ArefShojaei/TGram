@@ -14,32 +14,32 @@ interface HasMessageManager
         bool $disable_web_page_preview = false,
         bool $disable_notification = false,
         bool $protect_content = false,
-        ?int $message_thread_id = null,
-    ): void;
+        ?int $message_thread_id = null
+    ): object;
 
-    public function sendChatAction(ChatAction $action): void;
+    public function sendChatAction(ChatAction $action): object;
 
     public function editMessageText(
         string $text,
         ?string $parse_mode = "HTML",
-        ?array $reply_markup = null,
-    ): void;
+        ?array $reply_markup = null
+    ): object;
 
     public function editMessageCaption(
         string $caption,
         ?string $parse_mode = "HTML",
-        ?array $reply_markup = null,
-    ): void;
+        ?array $reply_markup = null
+    ): object;
 
-    public function editMessageReplyMarkup(array $reply_markup): void;
+    public function editMessageReplyMarkup(array $reply_markup): object;
 
-    public function deleteMessage(): void;
+    public function deleteMessage(): object;
 
-    public function deleteMessages(array $message_ids): void;
+    public function deleteMessages(array $message_ids): object;
 
-    public function pinChatMessage(bool $disable_notification = true): void;
+    public function pinChatMessage(bool $disable_notification = true): object;
 
-    public function unpinChatMessage(): void;
+    public function unpinChatMessage(): object;
 
-    public function unpinAllChatMessages(): void;
+    public function unpinAllChatMessages(): object;
 }

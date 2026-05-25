@@ -2,8 +2,7 @@
 
 namespace TGram\Abilities;
 
-use TGram\Resolvers\CallbackResolver;
-use TGram\Resolvers\MessageResolver;
+use TGram\Resolvers\{CallbackResolver, MessageResolver};
 
 trait CanProvideProcessManager
 {

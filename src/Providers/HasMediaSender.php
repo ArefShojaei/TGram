@@ -15,8 +15,8 @@ trait HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void {
+        ?array $reply_markup = null
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -30,7 +30,7 @@ trait HasMediaSender
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendLocation",
             params: $body,
@@ -44,8 +44,8 @@ trait HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void {
+        ?array $reply_markup = null
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -59,7 +59,7 @@ trait HasMediaSender
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendContact",
             params: $body,
@@ -81,8 +81,8 @@ trait HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void {
+        ?array $reply_markup = null
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -106,7 +106,7 @@ trait HasMediaSender
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendPoll",
             params: $body,
@@ -125,8 +125,8 @@ trait HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void {
+        ?array $reply_markup = null
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -147,7 +147,7 @@ trait HasMediaSender
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendVenue",
             params: $body,
@@ -179,8 +179,8 @@ trait HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void {
+        ?array $reply_markup = null
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -214,7 +214,7 @@ trait HasMediaSender
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendInvoice",
             params: $body,
@@ -236,8 +236,8 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void {
+        ?string $message_effect_id = null
+    ): object {
         $body = [
             "chat_id" => $this->update->chat->id,
             "caption" => $caption,
@@ -260,7 +260,7 @@ trait HasMediaSender
             "message_effect_id" => $message_effect_id,
         ];
 
-        $this->sendFile("sendPhoto", $photo, MediaType::PHOTO, $body);
+        return $this->sendFile("sendPhoto", $photo, MediaType::PHOTO, $body);
     }
 
     public function sendAudio(
@@ -271,7 +271,6 @@ trait HasMediaSender
         ?int $duration = null,
         ?string $performer = null,
         ?string $title = null,
-        ?string $thumbnail = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $message_thread_id = null,
@@ -281,8 +280,8 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void {
+        ?string $message_effect_id = null
+    ): object {
         $body = [
             "chat_id" => $this->update->chat->id,
             "caption" => $caption,
@@ -307,12 +306,11 @@ trait HasMediaSender
             "message_effect_id" => $message_effect_id,
         ];
 
-        $this->sendFile("sendAudio", $audio, MediaType::AUDIO, $body);
+        return $this->sendFile("sendAudio", $audio, MediaType::AUDIO, $body);
     }
 
     public function sendDocument(
         string $document,
-        ?string $thumbnail = null,
         ?string $caption = null,
         ?string $parse_mode = "HTML",
         ?array $caption_entities = null,
@@ -326,8 +324,8 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void {
+        ?string $message_effect_id = null
+    ): object {
         $body = [
             "chat_id" => $this->update->chat->id,
             "caption" => $caption,
@@ -350,7 +348,12 @@ trait HasMediaSender
             "message_effect_id" => $message_effect_id,
         ];
 
-        $this->sendFile("sendDocument", $document, MediaType::DOCUMENT, $body);
+        return $this->sendFile(
+            "sendDocument",
+            $document,
+            MediaType::DOCUMENT,
+            $body,
+        );
     }
 
     public function sendVideo(
@@ -358,7 +361,6 @@ trait HasMediaSender
         ?int $duration = null,
         ?int $width = null,
         ?int $height = null,
-        ?string $thumbnail = null,
         ?string $caption = null,
         ?string $parse_mode = "HTML",
         ?array $caption_entities = null,
@@ -375,9 +377,8 @@ trait HasMediaSender
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
         ?string $message_effect_id = null,
-        ?int $start_timestamp = null,
-        ?string $cover = null,
-    ): void {
+        ?int $start_timestamp = null
+    ): object {
         $body = [
             "chat_id" => $this->update->chat->id,
             "duration" => $duration,
@@ -406,7 +407,7 @@ trait HasMediaSender
             "start_timestamp" => $start_timestamp,
         ];
 
-        $this->sendFile("sendVideo", $video, MediaType::VIDEO, $body);
+        return $this->sendFile("sendVideo", $video, MediaType::VIDEO, $body);
     }
 
     public function sendAnimation(
@@ -414,7 +415,6 @@ trait HasMediaSender
         ?int $duration = null,
         ?int $width = null,
         ?int $height = null,
-        ?string $thumbnail = null,
         ?string $caption = null,
         ?string $parse_mode = "HTML",
         ?array $caption_entities = null,
@@ -429,8 +429,8 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void {
+        ?string $message_effect_id = null
+    ): object {
         $body = [
             "chat_id" => $this->update->chat->id,
             "duration" => $duration,
@@ -457,7 +457,12 @@ trait HasMediaSender
             "message_effect_id" => $message_effect_id,
         ];
 
-        $this->sendFile("sendAnimation", $animation, MediaType::GIFT, $body);
+        return $this->sendFile(
+            "sendAnimation",
+            $animation,
+            MediaType::GIFT,
+            $body,
+        );
     }
 
     public function sendSticker(
@@ -472,8 +477,8 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void {
+        ?string $message_effect_id = null
+    ): object {
         $body = [
             "chat_id" => $this->update->chat->id,
             "emoji" => $emoji,
@@ -491,10 +496,15 @@ trait HasMediaSender
             "message_effect_id" => $message_effect_id,
         ];
 
-        $this->sendFile("sendSticker", $sticker, MediaType::STICKER, $body);
+        return $this->sendFile(
+            "sendSticker",
+            $sticker,
+            MediaType::STICKER,
+            $body,
+        );
     }
 
-    public function sendMediaGroup(array $media): void
+    public function sendMediaGroup(array $media): object
     {
         $body = [
             "form_params" => [
@@ -503,7 +513,7 @@ trait HasMediaSender
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendMediaGroup",
             params: $body,

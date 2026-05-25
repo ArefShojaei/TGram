@@ -14,8 +14,8 @@ trait HasMessageManager
         bool $disable_web_page_preview = false,
         bool $disable_notification = false,
         bool $protect_content = false,
-        ?int $message_thread_id = null,
-    ): void {
+        ?int $message_thread_id = null
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -32,14 +32,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendMessage",
             params: $body,
         );
     }
 
-    public function sendChatAction(ChatAction $action): void
+    public function sendChatAction(ChatAction $action): object
     {
         $body = [
             "form_params" => [
@@ -48,7 +48,7 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "sendChatAction",
             params: $body,
@@ -58,8 +58,8 @@ trait HasMessageManager
     public function editMessageText(
         string $text,
         ?string $parse_mode = "HTML",
-        ?array $reply_markup = null,
-    ): void {
+        ?array $reply_markup = null
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -72,7 +72,7 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "editMessageText",
             params: $body,
@@ -82,8 +82,8 @@ trait HasMessageManager
     public function editMessageCaption(
         string $caption,
         ?string $parse_mode = "HTML",
-        ?array $reply_markup = null,
-    ): void {
+        ?array $reply_markup = null
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -96,14 +96,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "editMessageCaption",
             params: $body,
         );
     }
 
-    public function editMessageReplyMarkup(array $reply_markup): void
+    public function editMessageReplyMarkup(array $reply_markup): object
     {
         $body = [
             "form_params" => [
@@ -115,14 +115,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "editMessageReplyMarkup",
             params: $body,
         );
     }
 
-    public function deleteMessage(): void
+    public function deleteMessage(): object
     {
         $body = [
             "form_params" => [
@@ -131,14 +131,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "deleteMessage",
             params: $body,
         );
     }
 
-    public function deleteMessages(array $message_ids): void
+    public function deleteMessages(array $message_ids): object
     {
         $body = [
             "form_params" => [
@@ -147,14 +147,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "deleteMessages",
             params: $body,
         );
     }
 
-    public function pinChatMessage(bool $disable_notification = true): void
+    public function pinChatMessage(bool $disable_notification = true): object
     {
         $body = [
             "form_params" => [
@@ -164,14 +164,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "pinChatMessage",
             params: $body,
         );
     }
 
-    public function unpinChatMessage(): void
+    public function unpinChatMessage(): object
     {
         $body = [
             "form_params" => [
@@ -180,14 +180,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "unpinChatMessage",
             params: $body,
         );
     }
 
-    public function unpinAllChatMessages(): void
+    public function unpinAllChatMessages(): object
     {
         $body = [
             "form_params" => [
@@ -195,7 +195,7 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "unpinAllChatMessages",
             params: $body,
@@ -204,8 +204,8 @@ trait HasMessageManager
 
     public function answerCallbackQuery(
         ?string $text = null,
-        bool $showAlert = false,
-    ): void {
+        bool $showAlert = false
+    ): object {
         $body = [
             "form_params" => [
                 "callback_query_id" => $this->update->callback_id,
@@ -214,7 +214,7 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "answerCallbackQuery",
             params: $body,
@@ -225,8 +225,8 @@ trait HasMessageManager
         string $inlineQueryId,
         array $results,
         int $cacheTime = 300,
-        bool $isPersonal = false,
-    ): void {
+        bool $isPersonal = false
+    ): object {
         $body = [
             "form_params" => [
                 "inline_query_id" => $inlineQueryId,
@@ -236,7 +236,7 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "answerInlineQuery",
             params: $body,
@@ -254,8 +254,8 @@ trait HasMessageManager
     public function editMessageLiveLocation(
         int $messageId,
         float $latitude,
-        float $longitude,
-    ): void {
+        float $longitude
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -265,14 +265,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::UPDATABLE,
             endpoint: "editMessageLiveLocation",
             params: $body,
         );
     }
 
-    public function stopPoll(int $messageId): void
+    public function stopPoll(int $messageId): object
     {
         $body = [
             "form_params" => [
@@ -281,14 +281,14 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::UPDATABLE,
             endpoint: "stopPoll",
             params: $body,
         );
     }
 
-    public function copyMessage(int|string $fromChatId, int $messageId): void
+    public function copyMessage(int|string $fromChatId, int $messageId): object
     {
         $body = [
             "form_params" => [
@@ -298,7 +298,7 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "copyMessage",
             params: $body,
@@ -307,8 +307,8 @@ trait HasMessageManager
 
     public function forwardMessage(
         int|string $fromChatId,
-        int $messageId,
-    ): void {
+        int $messageId
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -317,7 +317,7 @@ trait HasMessageManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "forwardMessage",
             params: $body,

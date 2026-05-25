@@ -11,8 +11,8 @@ interface HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void;
+        ?array $reply_markup = null
+    ): object;
 
     public function sendContact(
         string $phone_number,
@@ -21,8 +21,8 @@ interface HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void;
+        ?array $reply_markup = null
+    ): object;
 
     public function sendPoll(
         string $question,
@@ -39,8 +39,8 @@ interface HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void;
+        ?array $reply_markup = null
+    ): object;
 
     public function sendVenue(
         float $latitude,
@@ -54,8 +54,8 @@ interface HasMediaSender
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void;
+        ?array $reply_markup = null
+    ): object;
 
     public function sendInvoice(
         string $title,
@@ -82,8 +82,8 @@ interface HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null,
-    ): void;
+        ?array $reply_markup = null
+    ): object;
 
     public function sendPhoto(
         string $photo,
@@ -100,8 +100,8 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void;
+        ?string $message_effect_id = null
+    ): object;
 
     public function sendAudio(
         string $audio,
@@ -121,8 +121,8 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void;
+        ?string $message_effect_id = null
+    ): object;
 
     public function sendDocument(
         string $document,
@@ -140,8 +140,8 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void;
+        ?string $message_effect_id = null
+    ): object;
 
     public function sendVideo(
         string $video,
@@ -166,8 +166,8 @@ interface HasMediaSender
         ?bool $allow_paid_broadcast = null,
         ?string $message_effect_id = null,
         ?int $start_timestamp = null,
-        ?string $cover = null,
-    ): void;
+        ?string $cover = null
+    ): object;
 
     public function sendAnimation(
         string $animation,
@@ -189,8 +189,8 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void;
+        ?string $message_effect_id = null
+    ): object;
 
     public function sendSticker(
         string $sticker,
@@ -204,6 +204,6 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null,
-    ): void;
+        ?string $message_effect_id = null
+    ): object;
 }

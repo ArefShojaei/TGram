@@ -6,7 +6,7 @@ use TGram\Enums\{HttpMethod, MediaType};
 
 trait HasChatManager
 {
-    public function kickChatMember(bool $revoke_messages = true): void
+    public function kickChatMember(bool $revoke_messages = true): object
     {
         $body = [
             "form_params" => [
@@ -16,14 +16,14 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "kickChatMember",
             params: $body,
         );
     }
 
-    public function unbanChatMember(bool $only_if_banned = true): void
+    public function unbanChatMember(bool $only_if_banned = true): object
     {
         $body = [
             "form_params" => [
@@ -33,14 +33,14 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "unbanChatMember",
             params: $body,
         );
     }
 
-    public function restrictChatMember(): void
+    public function restrictChatMember(): object
     {
         $body = [
             "form_params" => [
@@ -60,14 +60,14 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "restrictChatMember",
             params: $body,
         );
     }
 
-    public function promoteChatMember(array $permissions = []): void
+    public function promoteChatMember(array $permissions = []): object
     {
         $defaulPermissions = [
             "can_delete_messages" => true,
@@ -90,14 +90,14 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "promoteChatMember",
             params: $body,
         );
     }
 
-    public function getChat(): void
+    public function getChat(): object
     {
         $body = [
             "form_params" => [
@@ -105,14 +105,14 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "getChat",
             params: $body,
         );
     }
 
-    public function getChatMemberCount(): void
+    public function getChatMemberCount(): object
     {
         $body = [
             "form_params" => [
@@ -120,14 +120,14 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "getChatMemberCount",
             params: $body,
         );
     }
 
-    public function getChatAdministrators(): void
+    public function getChatAdministrators(): object
     {
         $body = [
             "form_params" => [
@@ -135,7 +135,7 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "getChatAdministrators",
             params: $body,
@@ -145,8 +145,8 @@ trait HasChatManager
     public function createChatInviteLink(
         string $name,
         int $expire_time,
-        int $member_limit,
-    ): void {
+        int $member_limit
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -156,14 +156,14 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "createChatInviteLink",
             params: $body,
         );
     }
 
-    public function setChatTitle(string $title): void
+    public function setChatTitle(string $title): object
     {
         $body = [
             "form_params" => [
@@ -172,19 +172,19 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "setChatTitle",
             params: $body,
         );
     }
 
-    public function setChatPhoto(string $photo): void
+    public function setChatPhoto(string $photo): object
     {
-        $this->sendFile("setChatPhoto", $photo, MediaType::PHOTO);
+        return $this->sendFile("setChatPhoto", $photo, MediaType::PHOTO);
     }
 
-    public function deleteChatPhoto(): void
+    public function deleteChatPhoto(): object
     {
         $body = [
             "form_params" => [
@@ -192,14 +192,14 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "deleteChatPhoto",
             params: $body,
         );
     }
 
-    public function setChatDescription(string $description): void
+    public function setChatDescription(string $description): object
     {
         $body = [
             "form_params" => [
@@ -208,7 +208,7 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "setChatDescription",
             params: $body,
@@ -229,8 +229,8 @@ trait HasChatManager
         bool $can_change_info = false,
         bool $can_invite_users = true,
         bool $can_pin_messages = false,
-        bool $can_manage_topics = false,
-    ): void {
+        bool $can_manage_topics = false
+    ): object {
         $body = [
             "form_params" => [
                 "chat_id" => $this->update->chat->id,
@@ -253,7 +253,7 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "setChatPermissions",
             params: $body,
@@ -277,7 +277,7 @@ trait HasChatManager
         return $response["result"] ?? null;
     }
 
-    public function leaveChat(): void
+    public function leaveChat(): object
     {
         $body = [
             "form_params" => [
@@ -285,7 +285,7 @@ trait HasChatManager
             ],
         ];
 
-        $this->bot->request(
+        return $this->bot->request(
             method: HttpMethod::CREATABLE,
             endpoint: "leaveChat",
             params: $body,
