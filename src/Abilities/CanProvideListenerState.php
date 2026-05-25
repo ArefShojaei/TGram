@@ -4,6 +4,11 @@ namespace TGram\Abilities;
 
 trait CanProvideListenerState
 {
+    public function getMiddlewares(): array
+    {
+        return $this->middlewares;
+    }
+
     public function getCommandList(): array
     {
         return $this->commands;

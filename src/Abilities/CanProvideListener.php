@@ -9,6 +9,8 @@ trait CanProvideListener
 {
     use CanProvideListenerState;
 
+    private array $middlewares = [];
+
     private array $commands = [];
 
     private array $hears = [];
@@ -16,6 +18,11 @@ trait CanProvideListener
     private array $events = [];
 
     private ?Closure $callback = null;
+
+    public function use(Closure|array $middleware): void
+    {
+        $this->middlewares[] = $middleware;
+    }
 
     public function command(string $command, Closure|array $handler): void
     {

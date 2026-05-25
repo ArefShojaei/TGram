@@ -7,6 +7,8 @@ use TGram\Enums\MediaType;
 
 interface CommandListener
 {
+    public function use(Closure|array $middleware): void;
+
     public function command(string $command, Closure|array $handler): void;
 
     public function hears(string $pattern, Closure|array $handler): void;

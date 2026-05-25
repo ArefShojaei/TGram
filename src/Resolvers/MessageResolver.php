@@ -2,11 +2,11 @@
 
 namespace TGram\Resolvers;
 
-use InvalidArgumentException;
 use TGram\Bot;
 use TGram\Context;
 use TGram\DTO\Update;
 use TGram\Enums\MediaType;
+use TGram\Executors\MiddlewareExecutor;
 use TGram\Interfaces\Message\{MessageResolver as Resolver, MessageStrategy};
 use TGram\Messages\{
     CommandMessageStrategy,
@@ -14,7 +14,7 @@ use TGram\Messages\{
     TextMessageStrategy,
 };
 
-final class MessageResolver implements Resolver
+final class MessageResolver extends MiddlewareExecutor implements Resolver
 {
     private ?MessageStrategy $strategy = null;
 
@@ -81,6 +81,13 @@ final class MessageResolver implements Resolver
             );
         }
 
-        !is_null($this->strategy) && $this->strategy->handle($this->context);
+        parent::__construct($this->context, $this->bot->getMiddlewares());
+
+        is_null($this->next)
+            ? !is_null($this->strategy) &&
+                $this->strategy->handle($this->context)
+            : $this->next &&
+                !is_null($this->strategy) &&
+                $this->strategy->handle($this->context);
     }
 }

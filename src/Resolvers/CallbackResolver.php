@@ -5,10 +5,11 @@ namespace TGram\Resolvers;
 use TGram\Bot;
 use TGram\Context;
 use TGram\DTO\Update;
+use TGram\Executors\MiddlewareExecutor;
 use TGram\Interfaces\Message\{MessageResolver as Resolver, MessageStrategy};
 use TGram\Messages\CallbackMessageStrategy;
 
-final class CallbackResolver implements Resolver
+final class CallbackResolver extends MiddlewareExecutor implements Resolver
 {
     private ?MessageStrategy $strategy;
 
@@ -36,6 +37,10 @@ final class CallbackResolver implements Resolver
             $this->bot->getCallback(),
         );
 
-        $this->strategy->handle($this->context);
+        parent::__construct($this->context, $this->bot->getMiddlewares());
+
+        is_null($this->next)
+            ? $this->strategy->handle($this->context)
+            : $this->next && $this->strategy->handle($this->context);
     }
 }
