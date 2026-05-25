@@ -9,7 +9,7 @@ use TGram\Interfaces\Command\{
     CommandManager,
 };
 
-interface Telegram extends CommandManager, CommandListener, CommandListenerState
+interface Telegram extends CommandManager, CommandListener, CommandListenerState, Webhook
 {
     public function configure(array $settings): void;
 
