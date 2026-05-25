@@ -17,7 +17,7 @@ trait CanProvideProcessManager
 
             $updates = $response->result;
 
-            if (!count($updates)) continue;
+            if (!count($updates) || !is_array($updates)) continue;
 
             foreach ($updates as $update) {
                 $offset = $update->update_id + 1;
