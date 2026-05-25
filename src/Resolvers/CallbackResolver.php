@@ -24,8 +24,8 @@ final class CallbackResolver extends MiddlewareExecutor implements Resolver
                 chat: $this->update->callback_query->message->chat,
                 date: $this->update->callback_query->message->date,
                 input: $this->update->callback_query->message->text,
-                callback_id: $this->update->callback_query->id,
-                callback_data: $this->update->callback_query->data,
+                callback_query_id: $this->update->callback_query->id,
+                callback_query_data: $this->update->callback_query->data,
             ),
             bot: $this->bot,
         );
