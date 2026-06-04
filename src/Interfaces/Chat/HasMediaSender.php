@@ -257,7 +257,7 @@ interface HasMediaSender
         ?string $message_effect_id = null
     ): object;
 
-    public function setReaction(
+    public function setMessageReaction(
         int $message_id,
         ?array $reaction = null,
         bool $is_big = false

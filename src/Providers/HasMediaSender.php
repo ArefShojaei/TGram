@@ -742,7 +742,7 @@ trait HasMediaSender
         );
     }
 
-    public function setReaction(
+    public function setMessageReaction(
         int $message_id,
         ?array $reaction = null,
         bool $is_big = false
