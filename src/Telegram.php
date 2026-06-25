@@ -2,17 +2,16 @@
 
 namespace TGram;
 
-use TGram\Interfaces\Telegram as ITelegram;
 use TGram\Enums\ProcessMode;
-use TGram\Utils\Console;
-use TGram\Utils\Settings;
+use TGram\Utils\{Console, Settings};
+use TGram\Interfaces\Telegram as ITelegram;
+use TGram\Exceptions\InvalidTokenException;
 use TGram\Abilities\{
     CanProvideCommandManager,
     CanProvideListener,
     CanProvideProcessManager,
     CanProvideWebhookSystem,
 };
-use TGram\Exceptions\InvalidTokenException;
 
 final class Telegram extends Bot implements ITelegram
 {
@@ -33,12 +32,15 @@ final class Telegram extends Bot implements ITelegram
         Settings::set($settings);
     }
 
-    public function run(ProcessMode $mode = ProcessMode::POLLING): void
+    public function run(): void
     {
         echo Console::info("Bot is running...") . PHP_EOL;
 
-        $mode !== ProcessMode::WEBHOOK
-            ? $this->runPolling()
-            : $this->runWebhook();
+        $driver = Settings::get("transport.driver");
+
+        match ($driver) {
+            ProcessMode::POLLING => $this->runPolling(),
+            ProcessMode::WEBHOOK => $this->runWebhook(),
+        };
     }
 }
