@@ -10,12 +10,22 @@ final class Settings implements ISettings
 
     public static function set(array $settings): void
     {
-        self::$data = $settings;
+        self::$data = array_replace_recursive(self::$data, $settings);
     }
 
-    public static function get(string $key): mixed
+    public static function get(string $key, mixed $default = null): mixed
     {
-        return self::$data[$key] ?? null;
+        $segments = explode(".", $key);
+
+        $data = self::$data;
+
+        foreach ($segments as $segment) {
+            if (!isset($data[$segment])) return $default;
+
+            $data = $data[$segment];
+        }
+
+        return $data;
     }
 
     public static function getAll(): array
