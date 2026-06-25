@@ -9,7 +9,7 @@ trait HasChatManager
 {
     public function banChatMember(
         bool $revoke_messages = true,
-        ?int $until_date = null
+        ?int $until_date = null,
     ): object {
         $body = [
             "form_params" => [
@@ -60,7 +60,7 @@ trait HasChatManager
         bool $can_pin_messages = false,
         bool $can_manage_topics = false,
         ?int $until_date = null,
-        bool $use_independent_chat_permissions = false
+        bool $use_independent_chat_permissions = false,
     ): object {
         $permissions = [
             "can_send_messages" => $can_send_messages,
@@ -111,7 +111,7 @@ trait HasChatManager
         bool $can_post_messages = false,
         bool $can_edit_messages = false,
         bool $can_pin_messages = false,
-        bool $can_manage_topics = false
+        bool $can_manage_topics = false,
     ): object {
         $permissions = [
             "is_anonymous" => $is_anonymous,
@@ -211,7 +211,7 @@ trait HasChatManager
         ?string $name = null,
         ?int $expire_date = null,
         ?int $member_limit = null,
-        bool $creates_join_request = false
+        bool $creates_join_request = false,
     ): object {
         $body = [
             "form_params" => [
@@ -235,7 +235,7 @@ trait HasChatManager
         ?string $name = null,
         ?int $expire_date = null,
         ?int $member_limit = null,
-        bool $creates_join_request = false
+        bool $creates_join_request = false,
     ): object {
         $body = [
             "form_params" => [
@@ -342,7 +342,7 @@ trait HasChatManager
         bool $can_invite_users = false,
         bool $can_pin_messages = false,
         bool $can_manage_topics = false,
-        bool $use_independent_chat_permissions = false
+        bool $use_independent_chat_permissions = false,
     ): object {
         $permissions = [
             "can_send_messages" => $can_send_messages,
@@ -449,7 +449,7 @@ trait HasChatManager
     public function getUserProfilePhotos(
         int $user_id,
         ?int $offset = null,
-        ?int $limit = null
+        ?int $limit = null,
     ): object {
         $body = [
             "form_params" => [

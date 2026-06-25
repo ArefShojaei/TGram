@@ -11,7 +11,7 @@ trait HasFileUploader
         string $endpoint,
         string $file,
         MediaType $media,
-        array $body = []
+        array $body = [],
     ): object {
         if (empty($file)) {
             throw new FileException("File path cannot be empty");
@@ -42,7 +42,7 @@ trait HasFileUploader
         string $endpoint,
         string $file,
         MediaType $media,
-        array $body
+        array $body,
     ): object {
         try {
             $handle = fopen($file, "r");
@@ -88,7 +88,7 @@ trait HasFileUploader
         string $endpoint,
         string $file,
         MediaType $media,
-        array $body
+        array $body,
     ): object {
         $payload = [$media->value => $file];
 

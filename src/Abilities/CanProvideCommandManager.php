@@ -8,7 +8,7 @@ trait CanProvideCommandManager
 {
     public function setCommands(
         array $commands,
-        Scope $scope = Scope::DEFAULT
+        Scope $scope = Scope::DEFAULT,
     ): ?object {
         $body = [
             "json" => [

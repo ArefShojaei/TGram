@@ -11,7 +11,7 @@ trait HasCallbackQuery
         ?string $text = null,
         bool $show_alert = false,
         ?string $url = null,
-        ?int $cache_time = null
+        ?int $cache_time = null,
     ): object {
         $body = [
             "form_params" => [
@@ -36,7 +36,7 @@ trait HasCallbackQuery
         int $cache_time = 300,
         bool $is_personal = false,
         ?string $next_offset = null,
-        ?array $button = null
+        ?array $button = null,
     ): object {
         if (empty($results)) {
             throw new ValidationException("Results array cannot be empty");

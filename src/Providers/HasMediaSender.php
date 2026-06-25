@@ -23,7 +23,7 @@ trait HasMediaSender
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
         ?int $message_thread_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         if (!is_numeric($latitude) || !is_numeric($longitude)) {
             throw new ValidationException(
@@ -78,7 +78,7 @@ trait HasMediaSender
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
         ?int $message_thread_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         if (empty(trim($phone_number))) {
             throw new ValidationException("Phone number cannot be empty");
@@ -129,7 +129,7 @@ trait HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         if (empty(trim($question))) {
             throw new ValidationException("Poll question cannot be empty");
@@ -203,7 +203,7 @@ trait HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         if (!is_numeric($latitude) || !is_numeric($longitude)) {
             throw new ValidationException(
@@ -272,7 +272,7 @@ trait HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         if (empty(trim($title))) {
             throw new ValidationException("Invoice title cannot be empty");
@@ -344,7 +344,7 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object {
         $body = [
             "caption" => $caption,
@@ -388,7 +388,7 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object {
         $body = [
             "caption" => $caption,
@@ -431,7 +431,7 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object {
         $body = [
             "caption" => $caption,
@@ -483,7 +483,7 @@ trait HasMediaSender
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
         ?string $message_effect_id = null,
-        ?int $start_timestamp = null
+        ?int $start_timestamp = null,
     ): object {
         $body = [
             "duration" => $duration,
@@ -534,7 +534,7 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object {
         $body = [
             "duration" => $duration,
@@ -581,7 +581,7 @@ trait HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object {
         $body = [
             "emoji" => $emoji,
@@ -619,7 +619,7 @@ trait HasMediaSender
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null,
         ?string $business_connection_id = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object {
         $body = [
             "caption" => $caption,
@@ -650,7 +650,7 @@ trait HasMediaSender
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null,
         ?string $business_connection_id = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object {
         $body = [
             "duration" => $duration,
@@ -678,7 +678,7 @@ trait HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?string $business_connection_id = null
+        ?string $business_connection_id = null,
     ): object {
         if (empty($media)) {
             throw new ValidationException("Media array cannot be empty");
@@ -717,7 +717,7 @@ trait HasMediaSender
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null,
         ?string $business_connection_id = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object {
         $body = [
             "form_params" => [
@@ -745,7 +745,7 @@ trait HasMediaSender
     public function setMessageReaction(
         int $message_id,
         ?array $reaction = null,
-        bool $is_big = false
+        bool $is_big = false,
     ): object {
         $body = [
             "form_params" => [

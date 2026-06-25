@@ -7,8 +7,6 @@ use TGram\Exceptions\ValidationException;
 
 trait HasMessageManager
 {
-    use HasCallbackQuery;
-
     public function sendMessage(
         string $text,
         ?string $parse_mode = "HTML",
@@ -17,7 +15,7 @@ trait HasMessageManager
         bool $disable_web_page_preview = false,
         bool $disable_notification = false,
         bool $protect_content = false,
-        ?int $message_thread_id = null
+        ?int $message_thread_id = null,
     ): object {
         if (empty(trim($text))) {
             throw new ValidationException("Message text cannot be empty");
@@ -65,7 +63,7 @@ trait HasMessageManager
     public function editMessageText(
         string $text,
         ?string $parse_mode = "HTML",
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         if (empty(trim($text))) {
             throw new ValidationException("Message text cannot be empty");
@@ -93,7 +91,7 @@ trait HasMessageManager
     public function editMessageCaption(
         string $caption,
         ?string $parse_mode = "HTML",
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         if (empty(trim($caption))) {
             throw new ValidationException("Caption cannot be empty");
@@ -137,7 +135,7 @@ trait HasMessageManager
 
     public function editMessageMedia(
         array $media,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         $body = [
             "form_params" => [
@@ -264,7 +262,7 @@ trait HasMessageManager
         int $messageId,
         float $latitude,
         float $longitude,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         if (!is_numeric($latitude) || !is_numeric($longitude)) {
             throw new ValidationException(
@@ -293,7 +291,7 @@ trait HasMessageManager
 
     public function stopPoll(
         int $messageId,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object {
         $body = [
             "form_params" => [
@@ -318,7 +316,7 @@ trait HasMessageManager
         ?string $caption = null,
         ?string $parse_mode = null,
         ?array $reply_markup = null,
-        ?int $reply_to_message_id = null
+        ?int $reply_to_message_id = null,
     ): object {
         $body = [
             "form_params" => [
@@ -345,7 +343,7 @@ trait HasMessageManager
         int|string $fromChatId,
         int $messageId,
         bool $disable_notification = false,
-        bool $protect_content = false
+        bool $protect_content = false,
     ): object {
         $body = [
             "form_params" => [
