@@ -1,13 +1,12 @@
 # TGram - PHP Telegram Bot Library
 
-<div align="center">
-    <img src="docs/Logo.jpg" width="256" alt="TGram Logo" />
-    
-   **A Powerful and Easy-to-Use PHP Library for Building Telegram Bots**
+[![PHP Version](https://img.shields.io/badge/PHP-%5E8.2-blue.svg)](https://php.net)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![GitHub](https://img.shields.io/badge/github-TGram-black?logo=github)](https://github.com/ArefShojaei/TGram)
 
-   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-   [![PHP Version](https://img.shields.io/badge/PHP-8.0%2B-blue)](https://php.net)
-</div>
+A Powerful and Easy-to-Use PHP Library for Building Telegram Bot
+
+<img width="100%" alt="TGram" loading="lazy" src="https://github.com/user-attachments/assets/e878e717-25ed-41e9-a203-4c9df6aa3bf8" />
 
 ---
 
@@ -54,13 +53,13 @@ With TGram, you can:
 - **Command Handling**: Built-in support for bot commands (`/start`, `/help`, etc.)
 - **Message Listeners**: Listen for specific messages or patterns
 - **Keyboard Support**: Create inline and reply keyboards with buttons
-- **Message Types**: Handle text, photos, documents, and more
+- **Message Types (  Media )**: Handle photos, documents, videos and more
 - **Chat Management**: Manage chat information and user interactions
 - **Multiple Modes**: Support for both Polling and Webhook processing
 - **Error Handling**: Robust exception handling and error reporting
 - **Modern PHP**: Built with PHP 8.0+ features (attributes, typed properties, etc.)
 - **Well-Structured**: Organized codebase with clear separation of concerns
-- **Fully Tested**: Comprehensive test suite with 105+ tests
+- **Fully Tested**: Comprehensive test suite with 100+ tests
 
 ---
 
@@ -237,14 +236,45 @@ $app->hears("How are you?", function(Context $ctx) {
 });
 ```
 
-### 4. Handling Any Message
+### 4. Listening for Specific Media message
 
-Catch all messages that don't match other handlers:
+Use the `on()` method to respond to exact media messages:
 
 ```php
-$app->fallback(function(Context $ctx) {
-    $message = $ctx->update->message;
-    $ctx->sendMessage("I didn't understand that. Try /help");
+use TGram\Enums\MediaType;
+
+$app->on(MediaType::PHOTO, function(Context $ctx) {
+    $ctx->sendMessage("Media message is: Photo");
+});
+
+$app->on(MediaType::LOCATION, function(Context $ctx) {
+    $ctx->sendMessage("Media message is: Location");
+});
+```
+
+### 5. Listening for Callback-query
+
+Use the `callback()` method to respond to exact callback-query messages:
+
+```php
+$app->callback(function(Context $ctx) {
+    $ctx->sendMessage("Callback-query data received.");
+});
+```
+
+### 6. Listening for Middlewares before all things! 
+
+Use the `use()` method to run a Middleware before messages:
+
+```php
+$app->use(function(Context $ctx) {
+    $isAdmin = $ctx->update->message === "Dashboard";
+    
+    if (!$isAdmin) {
+        $ctx->sendMessage("403 | Forbideen");
+    }
+
+    $ctx->sendMessage("Welcome Admin!");
 });
 ```
 
@@ -271,32 +301,6 @@ $app->start(function(Context $ctx) {
     echo $user->first_name;      // First name
     echo $user->username;        // Username (if set)
     echo $user->is_bot;          // Is this user a bot?
-});
-```
-
-### Different Message Types
-
-Handle different types of messages:
-
-```php
-// Text messages (default)
-$app->hears("text", function(Context $ctx) {
-    // Handle text
-});
-
-// Photo messages
-$app->onPhoto(function(Context $ctx) {
-    $ctx->sendMessage("Nice photo! 📸");
-});
-
-// Document messages
-$app->onDocument(function(Context $ctx) {
-    $ctx->sendMessage("Document received! 📄");
-});
-
-// Voice messages
-$app->onVoice(function(Context $ctx) {
-    $ctx->sendMessage("Voice received! 🎙️");
 });
 ```
 
@@ -466,10 +470,31 @@ Configure your bot behavior:
 $bot = new Telegram("TOKEN");
 
 $bot->configure([
-    "polling_interval" => 2,      // Check for messages every 2 seconds
-    "max_attempts" => 3,           // Retry failed requests 3 times
-    "timeout" => 30,               // Request timeout in seconds
-    "debug_mode" => true,          // Enable debug logging
+    "transport" => [
+        "driver" => ProcessMode::POLLING, // polling | webhook
+    ],
+    "polling" => [
+        "interval" => 1,
+        "offset" => 0,
+        "limit" => 100,
+        "timeout" => 30,
+    ],
+    "webhook" => [
+        "secret_token" => "secret",
+    ],
+    "http" => [
+        "timeout" => 30,
+        "connect_timeout" => 5,
+    ],
+    "fallback_messages" => [
+        "text" => "Unknown message",
+        "media" => "Unsupported media",
+        "command" => "Unknown command",
+    ],
+    "logging" => [
+        "enabled" => true,
+        "path" => "/logs/tgram.log",
+    ],
 ]);
 
 $bot->run();
@@ -480,10 +505,10 @@ $bot->run();
 When users click inline buttons, handle the callback:
 
 ```php
-$app->onCallbackQuery(function(Context $ctx) {
-    $callbackData = $ctx->update->callback_query->data;
+$app->callback(function(Context $ctx) {
+    $data = $ctx->update->callback_query->data;
     
-    if ($callbackData === "vote_yes") {
+    if ($data === "vote_yes") {
         $ctx->answerCallbackQuery("Thanks for voting! ✅");
         // Update message or send new one
     }
