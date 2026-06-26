@@ -15,7 +15,7 @@ trait HasCallbackQuery
     ): object {
         $body = [
             "form_params" => [
-                "callback_query_id" => $this->update->callback_id,
+                "callback_query_id" => $this->update->callback_query_id,
                 "text" => $text,
                 "show_alert" => $show_alert,
                 "url" => $url,
