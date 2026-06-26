@@ -6,20 +6,20 @@ use TGram\Interfaces\Keyboard\KeyboardButton;
 
 final class Button implements KeyboardButton
 {
-    public static function url(string $text, string $address): array
+    public static function url(string $text, string $url): array
     {
         return [
             "text" => $text,
-            "url" => $address,
+            "url" => $url,
         ];
     }
 
-    public static function login(string $text, string $address): array
+    public static function login(string $text, string $url): array
     {
         return [
             "text" => $text,
             "login_url" => [
-                "url" => $address
+                "url" => $url,
             ],
         ];
     }
@@ -52,6 +52,16 @@ final class Button implements KeyboardButton
         return [
             "text" => $text,
             "request_location" => true,
+        ];
+    }
+
+    public static function webApp(string $text, string $url): array
+    {
+        return [
+            "text" => $text,
+            "web_app" => [
+                "url" => $url,
+            ],
         ];
     }
 }
