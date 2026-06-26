@@ -31,7 +31,7 @@ final class Button implements KeyboardButton
         ];
     }
 
-    public static function callback(string $text, mixed $data): array
+    public static function callback(string $text, string $data): array
     {
         return [
             "text" => $text,
