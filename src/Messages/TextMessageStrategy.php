@@ -15,12 +15,10 @@ final class TextMessageStrategy extends MessageExecutor implements
 
     public function handle(Context $context): void
     {
-        $messages = Settings::get("fallback_messages");
-
-        $fallbackMessage =
-            isset($messages["text"]) && strlen($messages["text"])
-                ? $messages["text"]
-                : FallbackMessage::TEXT->value;
+        $fallbackMessage = Settings::get(
+            "fallback_messages.text",
+            FallbackMessage::TEXT->value,
+        );
 
         $handler =
             $this->hears[$this->input] ??

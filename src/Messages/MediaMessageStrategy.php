@@ -15,12 +15,10 @@ final class MediaMessageStrategy extends MessageExecutor implements
 
     public function handle(Context $context): void
     {
-        $messages = Settings::get("fallback_messages");
-
-        $fallbackMessage =
-            isset($messages["media"]) && strlen($messages["media"])
-                ? $messages["media"]
-                : FallbackMessage::MEDIA->value;
+        $fallbackMessage = Settings::get(
+            "fallback_messages.media",
+            FallbackMessage::MEDIA->value,
+        );
 
         $handler =
             $this->events[$this->event] ??

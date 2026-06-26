@@ -20,12 +20,10 @@ final class CommandMessageStrategy extends MessageExecutor implements
     {
         $command = ltrim($this->input, "/");
 
-        $messages = Settings::get("fallback_messages");
-
-        $fallbackMessage =
-            isset($messages["command"]) && strlen($messages["command"])
-                ? $messages["command"]
-                : FallbackMessage::COMMAND->value;
+        $fallbackMessage = Settings::get(
+            "fallback_messages.command",
+            FallbackMessage::COMMAND->value,
+        );
 
         $handler =
             $this->commands[$command] ??
