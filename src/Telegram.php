@@ -5,7 +5,7 @@ namespace TGram;
 use TGram\Enums\ProcessMode;
 use TGram\Utils\{Console, Settings};
 use TGram\Interfaces\Telegram as ITelegram;
-use TGram\Exceptions\InvalidTokenException;
+use TGram\Validators\BotTokenValidator;
 use TGram\Abilities\{
     CanProvideCommandManager,
     CanProvideListener,
@@ -22,7 +22,9 @@ final class Telegram extends Bot implements ITelegram
 
     public function __construct(string $token)
     {
-        if (!isset($token) or !strlen($token)) throw new InvalidTokenException;
+        $validator = new BotTokenValidator($token);
+
+        $validator->validate();
 
         parent::__construct($token);
     }
