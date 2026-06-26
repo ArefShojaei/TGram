@@ -3,13 +3,14 @@
 namespace TGram\Executors;
 
 use Closure;
+
 use TGram\Context;
 
 abstract class MessageExecutor extends BaseExecutor
 {
     protected function execute(
         Closure|array|null $handler,
-        Context $context
+        Context $context,
     ): void {
         $callable = $this->resolve($handler);
 

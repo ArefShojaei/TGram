@@ -3,6 +3,7 @@
 namespace TGram\Abilities;
 
 use Closure;
+
 use TGram\Enums\MediaType;
 
 trait CanProvideListener

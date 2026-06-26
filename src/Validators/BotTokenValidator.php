@@ -15,7 +15,7 @@ final class BotTokenValidator implements Validator
     public function validate(): bool
     {
         if (!isset($this->token) or !strlen($this->token)) {
-            throw new InvalidTokenException();
+            throw new InvalidTokenException;
         }
 
         return true;

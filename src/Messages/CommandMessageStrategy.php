@@ -2,11 +2,11 @@
 
 namespace TGram\Messages;
 
-use TGram\Enums\FallbackMessage;
 use TGram\Context;
+use TGram\Utils\Settings;
+use TGram\Enums\FallbackMessage;
 use TGram\Executors\MessageExecutor;
 use TGram\Interfaces\Message\MessageStrategy;
-use TGram\Utils\Settings;
 
 final class CommandMessageStrategy extends MessageExecutor implements
     MessageStrategy

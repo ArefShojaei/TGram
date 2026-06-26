@@ -3,6 +3,7 @@
 namespace TGram\Executors;
 
 use Closure;
+
 use TGram\Context;
 
 abstract class MiddlewareExecutor extends BaseExecutor
@@ -25,7 +26,7 @@ abstract class MiddlewareExecutor extends BaseExecutor
     private function execute(
         Closure|array $middleware,
         Context $context,
-        callable $next
+        callable $next,
     ): void {
         $callable = $this->resolve($middleware);
 

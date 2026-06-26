@@ -3,10 +3,10 @@
 namespace TGram\Messages;
 
 use TGram\Context;
+use TGram\Utils\Settings;
 use TGram\Enums\FallbackMessage;
 use TGram\Executors\MessageExecutor;
 use TGram\Interfaces\Message\MessageStrategy;
-use TGram\Utils\Settings;
 
 final class MediaMessageStrategy extends MessageExecutor implements
     MessageStrategy
