@@ -9,6 +9,7 @@ use TGram\Enums\HttpStatusCode;
 use TGram\Validators\WebhookRequestValidator;
 use TGram\Resolvers\{CallbackResolver, MessageResolver};
 use TGram\Exceptions\{HttpBodyRawException, UpdateException};
+use TGram\Utils\{Console as Message, Logging\Logger};
 
 trait CanProvideProcessManager
 {
@@ -47,7 +48,10 @@ trait CanProvideProcessManager
 
     private function runWebhook(): void
     {
-        $validator = new WebhookRequestValidator;
+        $validator = new WebhookRequestValidator(
+            $_SERVER,
+            Settings::get("webhook.secret_token"),
+        );
 
         if (!$validator->validate()) {
             http_response_code(HttpStatusCode::FORBIDDEN->value);
@@ -70,7 +74,11 @@ trait CanProvideProcessManager
         } catch (Throwable $error) {
             http_response_code(HttpStatusCode::INTERNAL_SERVER_ERROR->value);
 
-            throw $error;
+            $message = Message::error($error->getMessage());
+
+            Logger::log($message);
+
+            return;
         }
     }
 

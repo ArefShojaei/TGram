@@ -3,16 +3,21 @@
 namespace TGram\Validators;
 
 use TGram\Interfaces\Validator;
-use TGram\Utils\Settings;
 
 final class WebhookRequestValidator implements Validator
 {
+    public function __construct(
+        private array $server,
+        private string $secretToken,
+    ) {}
+
     public function validate(): bool
     {
-        $incoming = $_SERVER["HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN"] ?? null;
+        $incoming =
+            $this->server["HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN"] ?? "";
 
-        $expected = Settings::get("webhook.secret_token");
+        $expected = $this->secretToken;
 
-        return $incoming === $expected;
+        return hash_equals($expected, $incoming);
     }
 }
