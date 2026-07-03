@@ -1,9 +1,22 @@
 {
     "name": "arefshojaei/tgram",
     "description": "PHP Telegram Bot",
+    "type": "library",
+    "version": "1.0.0",
     "license": "MIT",
     "prefer-stable": true,
     "minimum-stability": "stable",
+    "keywords": [
+        "telegram",
+        "telegram-bot",
+        "telegram-api",
+        "bot",
+        "api",
+        "webhook"
+    ],
+    "scripts": {
+        "test": "phpunit"
+    },
     "autoload": {
         "psr-4": {
             "TGram\\": "src/"
@@ -24,7 +37,7 @@
         "phpunit/phpunit": "^10"
     },
     "require": {
-        "arefshojaei/kitdash": "^1.4",
+        "php": ">=8.2",
         "guzzlehttp/guzzle": "^7.10"
     }
 }
