@@ -3,8 +3,11 @@
 namespace Tests\Unit\Core;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Bot;
 use TGram\Enums\HttpMethod;
+
+use Tests\Fixtures\FakeTelegramBotToken;
 use Tests\Helpers\TestHelper;
 
 /**
@@ -13,11 +16,13 @@ use Tests\Helpers\TestHelper;
  */
 class BotTest extends TestCase
 {
-    private $bot;
+    private Bot $bot;
 
     protected function setUp(): void
     {
-        $this->bot = new ConcreteBotForTesting('test_token_123');
+        $this->bot = new ConcreteBotForTesting(
+            FakeTelegramBotToken::getValidToken(),
+        );
     }
 
     /**
@@ -25,7 +30,7 @@ class BotTest extends TestCase
      */
     public function testConstructorInitializesGuzzleClient(): void
     {
-        $client = TestHelper::getPrivateProperty($this->bot, 'client');
+        $client = TestHelper::getPrivateProperty($this->bot, "client");
         $this->assertNotNull($client);
     }
 
@@ -34,11 +39,17 @@ class BotTest extends TestCase
      */
     public function testTelegramApiBaseUrlIsCorrect(): void
     {
-        $client = TestHelper::getPrivateProperty($this->bot, 'client');
-        $baseUri = $client->getConfig('base_uri');
-        
-        $this->assertStringContainsString('https://api.telegram.org/bot', (string)$baseUri);
-        $this->assertStringContainsString('test_token_123', (string)$baseUri);
+        $client = TestHelper::getPrivateProperty($this->bot, "client");
+        $baseUri = $client->getConfig("base_uri");
+
+        $this->assertStringContainsString(
+            "https://api.telegram.org/bot",
+            (string) $baseUri,
+        );
+        $this->assertStringContainsString(
+            FakeTelegramBotToken::getValidToken(),
+            (string) $baseUri,
+        );
     }
 
     /**
@@ -46,7 +57,8 @@ class BotTest extends TestCase
      */
     public function testRequestMethodReturnsObject(): void
     {
-        $result = $this->bot->request(HttpMethod::POST, 'getMe', []);
+        $result = $this->bot->request(HttpMethod::CREATABLE, "getMe", []);
+
         $this->assertIsObject($result);
     }
 
@@ -56,11 +68,13 @@ class BotTest extends TestCase
     public function testRequestMethodWithValidParameters(): void
     {
         $params = [
-            'chat_id' => 123,
-            'text' => 'Hello'
+            "chat_id" => 123,
+            "text" => "Hello",
         ];
-        
-        $result = $this->bot->request(HttpMethod::POST, 'sendMessage', ['json' => $params]);
+
+        $result = $this->bot->request(HttpMethod::CREATABLE, "sendMessage", [
+            "json" => $params,
+        ]);
         $this->assertIsObject($result);
     }
 
@@ -69,8 +83,12 @@ class BotTest extends TestCase
      */
     public function testRequestMethodHandlesErrors(): void
     {
-        $result = $this->bot->request(HttpMethod::POST, 'invalid_endpoint', []);
-        
+        $result = $this->bot->request(
+            HttpMethod::CREATABLE,
+            "invalid_endpoint",
+            [],
+        );
+
         if (is_object($result)) {
             $this->assertTrue(isset($result->ok) || isset($result->error_code));
         }

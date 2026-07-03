@@ -3,6 +3,7 @@
 namespace Tests\Unit\Exceptions;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Exceptions\ValidationException;
 
 /**
@@ -16,7 +17,7 @@ class ValidationExceptionTest extends TestCase
      */
     public function testValidationExceptionCanBeInstantiated(): void
     {
-        $exception = new ValidationException('Validation failed');
+        $exception = new ValidationException("Validation failed");
         $this->assertInstanceOf(ValidationException::class, $exception);
     }
 
@@ -25,7 +26,7 @@ class ValidationExceptionTest extends TestCase
      */
     public function testValidationExceptionExtendsException(): void
     {
-        $exception = new ValidationException('Test');
+        $exception = new ValidationException("Test");
         $this->assertInstanceOf(\Exception::class, $exception);
     }
 
@@ -34,7 +35,7 @@ class ValidationExceptionTest extends TestCase
      */
     public function testValidationExceptionMessageIsStored(): void
     {
-        $message = 'Chat ID is required';
+        $message = "Chat ID is required";
         $exception = new ValidationException($message);
         $this->assertEquals($message, $exception->getMessage());
     }
@@ -45,6 +46,6 @@ class ValidationExceptionTest extends TestCase
     public function testValidationExceptionCanBeThrown(): void
     {
         $this->expectException(ValidationException::class);
-        throw new ValidationException('Invalid input');
+        throw new ValidationException("Invalid input");
     }
 }

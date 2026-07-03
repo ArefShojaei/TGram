@@ -3,22 +3,22 @@
 namespace Tests\Feature;
 
 use PHPUnit\Framework\TestCase;
-use TGram\Telegram;
-use TGram\Context;
-use TGram\DTO\Update;
-use Tests\Fixtures\FakeUpdateData;
+
+use TGram\{Telegram, Context};
+
+use Tests\Fixtures\FakeTelegramBotToken;
 
 /**
  * CommandHandlingTest tests command processing workflow.
  * Tests command registration and execution flow.
  */
-class CommandHandlingTest extends TestCase
+final class CommandHandlingTest extends TestCase
 {
-    private $bot;
+    private Telegram $bot;
 
     protected function setUp(): void
     {
-        $this->bot = new Telegram('test_token');
+        $this->bot = new Telegram(FakeTelegramBotToken::getValidToken());
     }
 
     /**
@@ -26,10 +26,10 @@ class CommandHandlingTest extends TestCase
      */
     public function testCommandCanBeRegistered(): void
     {
-        $this->bot->command('/hello', function() {
-            return 'Hello!';
+        $this->bot->command("/hello", function () {
+            return "Hello!";
         });
-        
+
         $this->assertTrue(true);
     }
 
@@ -38,10 +38,10 @@ class CommandHandlingTest extends TestCase
      */
     public function testMultipleCommandsCanBeRegistered(): void
     {
-        $this->bot->command('/start', function() {});
-        $this->bot->command('/help', function() {});
-        $this->bot->command('/about', function() {});
-        
+        $this->bot->command("/start", function () {});
+        $this->bot->command("/help", function () {});
+        $this->bot->command("/about", function () {});
+
         $this->assertTrue(true);
     }
 
@@ -50,10 +50,10 @@ class CommandHandlingTest extends TestCase
      */
     public function testStartCommandIsSpecialCase(): void
     {
-        $this->bot->start(function() {
-            return 'Started';
+        $this->bot->start(function () {
+            return "Started";
         });
-        
+
         $this->assertTrue(true);
     }
 
@@ -62,10 +62,10 @@ class CommandHandlingTest extends TestCase
      */
     public function testHelpCommandIsSpecialCase(): void
     {
-        $this->bot->help(function() {
-            return 'Help information';
+        $this->bot->help(function () {
+            return "Help information";
         });
-        
+
         $this->assertTrue(true);
     }
 
@@ -74,11 +74,11 @@ class CommandHandlingTest extends TestCase
      */
     public function testCommandWithCallbackClosure(): void
     {
-        $callback = function(Context $context) {
-            return 'Command executed';
+        $callback = function (Context $context) {
+            return "Command executed";
         };
-        
-        $this->bot->command('/test', $callback);
+
+        $this->bot->command("/test", $callback);
         $this->assertTrue(true);
     }
 }

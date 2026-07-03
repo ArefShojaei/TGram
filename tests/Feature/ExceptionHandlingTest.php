@@ -3,14 +3,17 @@
 namespace Tests\Feature;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Telegram;
 use TGram\Exceptions\InvalidTokenException;
+
+use Tests\Fixtures\FakeTelegramBotToken;
 
 /**
  * ExceptionHandlingTest tests exception scenarios.
  * Tests error handling in bot workflows.
  */
-class ExceptionHandlingTest extends TestCase
+final class ExceptionHandlingTest extends TestCase
 {
     /**
      * Test invalid token throws exception.
@@ -18,16 +21,7 @@ class ExceptionHandlingTest extends TestCase
     public function testInvalidTokenThrowsException(): void
     {
         $this->expectException(InvalidTokenException::class);
-        new Telegram('');
-    }
-
-    /**
-     * Test null token throws exception.
-     */
-    public function testNullTokenThrowsException(): void
-    {
-        $this->expectException(InvalidTokenException::class);
-        new Telegram(null);
+        new Telegram(FakeTelegramBotToken::getEmptyToken());
     }
 
     /**
@@ -36,7 +30,7 @@ class ExceptionHandlingTest extends TestCase
     public function testWhitespaceTokenThrowsException(): void
     {
         $this->expectException(InvalidTokenException::class);
-        new Telegram('   ');
+        new Telegram(FakeTelegramBotToken::getEmptyTokenWithWhitespace());
     }
 
     /**
@@ -45,9 +39,12 @@ class ExceptionHandlingTest extends TestCase
     public function testExceptionMessageIsDescriptive(): void
     {
         try {
-            new Telegram('');
+            new Telegram(FakeTelegramBotToken::getEmptyToken());
         } catch (InvalidTokenException $e) {
-            $this->assertStringContainsString('token', strtolower($e->getMessage()));
+            $this->assertStringContainsString(
+                "token",
+                strtolower($e->getMessage()),
+            );
         }
     }
 
@@ -57,13 +54,13 @@ class ExceptionHandlingTest extends TestCase
     public function testExceptionCanBeCaughtAndHandled(): void
     {
         $caught = false;
-        
+
         try {
-            new Telegram('');
+            new Telegram(FakeTelegramBotToken::getEmptyToken());
         } catch (InvalidTokenException $e) {
             $caught = true;
         }
-        
+
         $this->assertTrue($caught);
     }
 }

@@ -3,21 +3,25 @@
 namespace Tests\Feature;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Telegram;
 use TGram\Exceptions\InvalidTokenException;
+
+use Tests\Fixtures\FakeTelegramBotToken;
 
 /**
  * BotInitializationTest tests bot initialization flow.
  * Tests complete bot setup and configuration process.
  */
-class BotInitializationTest extends TestCase
+final class BotInitializationTest extends TestCase
 {
     /**
      * Test bot initializes with valid token.
      */
     public function testBotInitializesWithValidToken(): void
     {
-        $bot = new Telegram('123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11');
+        $bot = new Telegram(FakeTelegramBotToken::getValidToken());
+
         $this->assertInstanceOf(Telegram::class, $bot);
     }
 
@@ -26,13 +30,13 @@ class BotInitializationTest extends TestCase
      */
     public function testBotCanBeConfigured(): void
     {
-        $bot = new Telegram('valid_token');
-        
+        $bot = new Telegram(FakeTelegramBotToken::getValidToken());
+
         $bot->configure([
-            'polling_interval' => 2,
-            'timeout' => 30
+            "polling_interval" => 2,
+            "timeout" => 30,
         ]);
-        
+
         $this->assertTrue(true); // No exception thrown
     }
 
@@ -42,7 +46,8 @@ class BotInitializationTest extends TestCase
     public function testBotRejectsInvalidTokenOnConstruction(): void
     {
         $this->expectException(InvalidTokenException::class);
-        new Telegram('');
+
+        new Telegram(FakeTelegramBotToken::getInvalidToken());
     }
 
     /**
@@ -50,13 +55,13 @@ class BotInitializationTest extends TestCase
      */
     public function testBotInitializesWithListeners(): void
     {
-        $bot = new Telegram('valid_token');
-        
+        $bot = new Telegram(FakeTelegramBotToken::getValidToken());
+
         $called = false;
-        $bot->start(function() use (&$called) {
+        $bot->start(function () use (&$called) {
             $called = true;
         });
-        
+
         $this->assertTrue(true); // Listener registered
     }
 
@@ -65,13 +70,13 @@ class BotInitializationTest extends TestCase
      */
     public function testBotMultipleInitializationSteps(): void
     {
-        $bot = new Telegram('token123');
-        
-        $bot->configure(['debug' => true]);
-        $bot->start(function() {});
-        $bot->command('/test', function() {});
-        $bot->hears('hello', function() {});
-        
+        $bot = new Telegram(FakeTelegramBotToken::getValidToken());
+
+        $bot->configure(["debug" => true]);
+        $bot->start(function () {});
+        $bot->command("/test", function () {});
+        $bot->hears("hello", function () {});
+
         $this->assertTrue(true);
     }
 }

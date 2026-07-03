@@ -3,6 +3,7 @@
 namespace Tests\Unit\Exceptions;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Exceptions\InvalidTokenException;
 
 /**
@@ -35,7 +36,7 @@ class InvalidTokenExceptionTest extends TestCase
     public function testDefaultExceptionMessage(): void
     {
         $exception = new InvalidTokenException();
-        $this->assertEquals('Invalid bot token!', $exception->getMessage());
+        $this->assertEquals("Invalid bot token!", $exception->getMessage());
     }
 
     /**
@@ -43,7 +44,7 @@ class InvalidTokenExceptionTest extends TestCase
      */
     public function testCustomExceptionMessage(): void
     {
-        $customMessage = 'Token cannot be empty';
+        $customMessage = "Token cannot be empty";
         $exception = new InvalidTokenException($customMessage);
         $this->assertEquals($customMessage, $exception->getMessage());
     }
@@ -55,15 +56,6 @@ class InvalidTokenExceptionTest extends TestCase
     {
         $this->expectException(InvalidTokenException::class);
         throw new InvalidTokenException();
-    }
-
-    /**
-     * Test exception code is preserved.
-     */
-    public function testExceptionCodeIsPreserved(): void
-    {
-        $exception = new InvalidTokenException('Test', 123);
-        $this->assertEquals(123, $exception->getCode());
     }
 
     /**

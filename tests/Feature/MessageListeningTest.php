@@ -3,19 +3,20 @@
 namespace Tests\Feature;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Telegram;
 
 /**
  * MessageListeningTest tests message listening workflow.
  * Tests message pattern matching and handlers.
  */
-class MessageListeningTest extends TestCase
+final class MessageListeningTest extends TestCase
 {
-    private $bot;
+    private Telegram $bot;
 
     protected function setUp(): void
     {
-        $this->bot = new Telegram('test_token');
+        $this->bot = new Telegram("123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11");
     }
 
     /**
@@ -23,10 +24,10 @@ class MessageListeningTest extends TestCase
      */
     public function testMessageListenerCanBeRegistered(): void
     {
-        $this->bot->hears('hello', function() {
-            return 'Heard hello';
+        $this->bot->hears("hello", function () {
+            return "Heard hello";
         });
-        
+
         $this->assertTrue(true);
     }
 
@@ -35,10 +36,10 @@ class MessageListeningTest extends TestCase
      */
     public function testMultipleMessageListeners(): void
     {
-        $this->bot->hears('hello', function() {});
-        $this->bot->hears('hi', function() {});
-        $this->bot->hears('hey', function() {});
-        
+        $this->bot->hears("hello", function () {});
+        $this->bot->hears("hi", function () {});
+        $this->bot->hears("hey", function () {});
+
         $this->assertTrue(true);
     }
 
@@ -47,10 +48,10 @@ class MessageListeningTest extends TestCase
      */
     public function testExactMessageMatching(): void
     {
-        $this->bot->hears('exact_phrase', function() {
-            return 'Matched exact phrase';
+        $this->bot->hears("exact_phrase", function () {
+            return "Matched exact phrase";
         });
-        
+
         $this->assertTrue(true);
     }
 
@@ -59,9 +60,9 @@ class MessageListeningTest extends TestCase
      */
     public function testCaseSensitiveMatching(): void
     {
-        $this->bot->hears('Hello', function() {});
-        $this->bot->hears('hello', function() {});
-        
+        $this->bot->hears("Hello", function () {});
+        $this->bot->hears("hello", function () {});
+
         $this->assertTrue(true);
     }
 
@@ -70,7 +71,7 @@ class MessageListeningTest extends TestCase
      */
     public function testListenerWithSpecialCharacters(): void
     {
-        $this->bot->hears('price: $99.99', function() {});
+        $this->bot->hears('price: $99.99', function () {});
         $this->assertTrue(true);
     }
 }

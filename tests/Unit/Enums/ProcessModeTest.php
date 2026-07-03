@@ -3,20 +3,21 @@
 namespace Tests\Unit\Enums;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Enums\ProcessMode;
 
 /**
  * ProcessModeTest tests the ProcessMode enum.
  * Tests enum cases and values.
  */
-class ProcessModeTest extends TestCase
+final class ProcessModeTest extends TestCase
 {
     /**
      * Test WEBHOOK case exists.
      */
     public function testWebhookCaseExists(): void
     {
-        $this->assertTrue(defined('TGram\\Enums\\ProcessMode::WEBHOOK'));
+        $this->assertTrue(defined("TGram\\Enums\\ProcessMode::WEBHOOK"));
     }
 
     /**
@@ -24,7 +25,7 @@ class ProcessModeTest extends TestCase
      */
     public function testPollingCaseExists(): void
     {
-        $this->assertTrue(defined('TGram\\Enums\\ProcessMode::POLLING'));
+        $this->assertTrue(defined("TGram\\Enums\\ProcessMode::POLLING"));
     }
 
     /**
@@ -32,8 +33,8 @@ class ProcessModeTest extends TestCase
      */
     public function testEnumCaseNames(): void
     {
-        $this->assertEquals('WEBHOOK', ProcessMode::WEBHOOK->name);
-        $this->assertEquals('POLLING', ProcessMode::POLLING->name);
+        $this->assertEquals("WEBHOOK", ProcessMode::WEBHOOK->name);
+        $this->assertEquals("POLLING", ProcessMode::POLLING->name);
     }
 
     /**
@@ -43,7 +44,7 @@ class ProcessModeTest extends TestCase
     {
         $mode1 = ProcessMode::POLLING;
         $mode2 = ProcessMode::POLLING;
-        
+
         $this->assertTrue($mode1 === $mode2);
     }
 
@@ -54,7 +55,7 @@ class ProcessModeTest extends TestCase
     {
         $mode1 = ProcessMode::POLLING;
         $mode2 = ProcessMode::WEBHOOK;
-        
+
         $this->assertFalse($mode1 === $mode2);
     }
 

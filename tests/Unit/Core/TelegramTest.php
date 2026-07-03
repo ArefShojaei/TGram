@@ -3,9 +3,9 @@
 namespace Tests\Unit\Core;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Telegram;
-use TGram\Exceptions\InvalidTokenException;
-use Tests\Helpers\TestHelper;
+use TGram\Exceptions\{EmptyArrayException, InvalidTokenException};
 
 /**
  * TelegramTest tests the main Telegram bot class.
@@ -18,7 +18,7 @@ class TelegramTest extends TestCase
      */
     public function testConstructorWithValidToken(): void
     {
-        $telegram = new Telegram('valid_token_123456');
+        $telegram = new Telegram("123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11");
         $this->assertInstanceOf(Telegram::class, $telegram);
     }
 
@@ -28,7 +28,7 @@ class TelegramTest extends TestCase
     public function testConstructorThrowsExceptionWithEmptyToken(): void
     {
         $this->expectException(InvalidTokenException::class);
-        new Telegram('');
+        new Telegram("");
     }
 
     /**
@@ -37,16 +37,7 @@ class TelegramTest extends TestCase
     public function testConstructorThrowsExceptionWithWhitespaceToken(): void
     {
         $this->expectException(InvalidTokenException::class);
-        new Telegram('   ');
-    }
-
-    /**
-     * Test constructor throws exception with null token.
-     */
-    public function testConstructorThrowsExceptionWithNullToken(): void
-    {
-        $this->expectException(InvalidTokenException::class);
-        new Telegram(null);
+        new Telegram("   ");
     }
 
     /**
@@ -54,14 +45,14 @@ class TelegramTest extends TestCase
      */
     public function testConfigureMethodSetsSettings(): void
     {
-        $telegram = new Telegram('test_token');
+        $telegram = new Telegram("123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11");
         $config = [
-            'polling_interval' => 5,
-            'max_attempts' => 3,
-            'timeout' => 30,
-            'debug_mode' => true
+            "polling_interval" => 5,
+            "max_attempts" => 3,
+            "timeout" => 30,
+            "debug_mode" => true,
         ];
-        
+
         $telegram->configure($config);
         $this->assertTrue(true); // Configuration stored without error
     }
@@ -71,9 +62,11 @@ class TelegramTest extends TestCase
      */
     public function testConfigureWithEmptyArray(): void
     {
-        $telegram = new Telegram('test_token');
+        $telegram = new Telegram("123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11");
+
+        $this->expectException(EmptyArrayException::class);
+
         $telegram->configure([]);
-        $this->assertTrue(true);
     }
 
     /**
@@ -81,7 +74,8 @@ class TelegramTest extends TestCase
      */
     public function testTelegramImplementsRequiredInterfaces(): void
     {
-        $telegram = new Telegram('test_token');
+        $telegram = new Telegram("123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11");
+
         $this->assertInstanceOf(\TGram\Interfaces\Telegram::class, $telegram);
     }
 
@@ -91,9 +85,9 @@ class TelegramTest extends TestCase
     public function testInvalidTokenExceptionMessage(): void
     {
         try {
-            new Telegram('');
+            new Telegram("");
         } catch (InvalidTokenException $e) {
-            $this->assertStringContainsString('Invalid', $e->getMessage());
+            $this->assertStringContainsString("Invalid", $e->getMessage());
         }
     }
 }

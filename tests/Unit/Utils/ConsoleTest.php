@@ -3,20 +3,22 @@
 namespace Tests\Unit\Utils;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Utils\Console;
 
 /**
  * ConsoleTest tests the Console utility class.
  * Tests console output formatting.
  */
-class ConsoleTest extends TestCase
+final class ConsoleTest extends TestCase
 {
     /**
      * Test info method returns string.
      */
     public function testInfoMethodReturnsString(): void
     {
-        $output = Console::info('Test message');
+        $output = Console::info("Test message");
+
         $this->assertIsString($output);
     }
 
@@ -25,7 +27,8 @@ class ConsoleTest extends TestCase
      */
     public function testErrorMethodReturnsString(): void
     {
-        $output = Console::error('Error message');
+        $output = Console::error("Error message");
+
         $this->assertIsString($output);
     }
 
@@ -34,7 +37,8 @@ class ConsoleTest extends TestCase
      */
     public function testSuccessMethodReturnsString(): void
     {
-        $output = Console::success('Success message');
+        $output = Console::success("Success message");
+
         $this->assertIsString($output);
     }
 
@@ -43,7 +47,8 @@ class ConsoleTest extends TestCase
      */
     public function testWarningMethodReturnsString(): void
     {
-        $output = Console::warning('Warning message');
+        $output = Console::warn("Warning message");
+
         $this->assertIsString($output);
     }
 
@@ -52,8 +57,9 @@ class ConsoleTest extends TestCase
      */
     public function testInfoOutputContainsMessage(): void
     {
-        $output = Console::info('Test Info');
-        $this->assertStringContainsString('Test Info', $output);
+        $output = Console::info("Test Info");
+
+        $this->assertStringContainsString("Test Info", $output);
     }
 
     /**
@@ -61,7 +67,8 @@ class ConsoleTest extends TestCase
      */
     public function testErrorOutputContainsMessage(): void
     {
-        $output = Console::error('Test Error');
-        $this->assertStringContainsString('Test Error', $output);
+        $output = Console::error("Test Error");
+
+        $this->assertStringContainsString("Test Error", $output);
     }
 }

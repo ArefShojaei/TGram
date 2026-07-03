@@ -3,7 +3,7 @@
 namespace Tests\Fixtures;
 
 /**
- * FakeTelegarmBotToken provides mock Telegram bot token data for testing.
+ * FakeTelegramBotToken provides mock Telegram bot token data for testing.
  */
 final class FakeTelegramBotToken
 {

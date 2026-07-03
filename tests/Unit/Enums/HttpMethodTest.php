@@ -3,20 +3,21 @@
 namespace Tests\Unit\Enums;
 
 use PHPUnit\Framework\TestCase;
+
 use TGram\Enums\HttpMethod;
 
 /**
  * HttpMethodTest tests the HttpMethod enum.
  * Tests HTTP method definitions.
  */
-class HttpMethodTest extends TestCase
+final class HttpMethodTest extends TestCase
 {
     /**
      * Test GET method exists.
      */
     public function testGetMethodExists(): void
     {
-        $this->assertTrue(defined('TGram\\Enums\\HttpMethod::GET'));
+        $this->assertTrue(defined("TGram\\Enums\\HttpMethod::READABLE"));
     }
 
     /**
@@ -24,7 +25,7 @@ class HttpMethodTest extends TestCase
      */
     public function testPostMethodExists(): void
     {
-        $this->assertTrue(defined('TGram\\Enums\\HttpMethod::POST'));
+        $this->assertTrue(defined("TGram\\Enums\\HttpMethod::CREATABLE"));
     }
 
     /**
@@ -32,8 +33,8 @@ class HttpMethodTest extends TestCase
      */
     public function testMethodNames(): void
     {
-        $this->assertEquals('GET', HttpMethod::GET->name);
-        $this->assertEquals('POST', HttpMethod::POST->name);
+        $this->assertEquals("get", HttpMethod::READABLE->value);
+        $this->assertEquals("post", HttpMethod::CREATABLE->value);
     }
 
     /**
@@ -41,8 +42,8 @@ class HttpMethodTest extends TestCase
      */
     public function testMethodValues(): void
     {
-        $this->assertEquals('get', HttpMethod::GET->value);
-        $this->assertEquals('post', HttpMethod::POST->value);
+        $this->assertEquals("get", HttpMethod::READABLE->value);
+        $this->assertEquals("post", HttpMethod::CREATABLE->value);
     }
 
     /**
@@ -50,7 +51,7 @@ class HttpMethodTest extends TestCase
      */
     public function testMethodComparison(): void
     {
-        $this->assertNotEquals(HttpMethod::GET, HttpMethod::POST);
-        $this->assertTrue(HttpMethod::GET === HttpMethod::GET);
+        $this->assertNotEquals(HttpMethod::READABLE, HttpMethod::CREATABLE);
+        $this->assertTrue(HttpMethod::READABLE === HttpMethod::READABLE);
     }
 }
