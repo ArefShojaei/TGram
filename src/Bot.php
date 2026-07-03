@@ -16,7 +16,7 @@ abstract class Bot implements IBot
 
     private const API_BASE_URL = "https://api.telegram.org/bot";
 
-    private Client $client;
+    protected Client $client;
 
     public function __construct(string $token)
     {
