@@ -43,7 +43,7 @@ trait CanProvideWebhookSystem
         ];
 
         return $this->request(
-            method: HttpMethod::DELETABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "deleteWebhook",
             params: $body,
         );
@@ -76,7 +76,7 @@ trait CanProvideWebhookSystem
         ];
 
         return $this->request(
-            method: HttpMethod::UPDATABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "setChatMenuButton",
             params: $body,
         );
@@ -94,7 +94,7 @@ trait CanProvideWebhookSystem
         ];
 
         return $this->request(
-            method: HttpMethod::UPDATABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "setMyDefaultAdministratorRights",
             params: $body,
         );

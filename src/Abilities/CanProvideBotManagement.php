@@ -155,7 +155,7 @@ trait CanProvideBotManagement
         ];
 
         return $this->request(
-            method: HttpMethod::DELETABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "deleteMyDefaultAdministratorRights",
             params: $body,
         );

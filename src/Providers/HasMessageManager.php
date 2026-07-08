@@ -149,7 +149,7 @@ trait HasMessageManager
         ];
 
         return $this->bot->request(
-            method: HttpMethod::UPDATABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "editMessageMedia",
             params: $body,
         );
@@ -252,7 +252,7 @@ trait HasMessageManager
         ];
 
         return $this->bot->request(
-            method: HttpMethod::UPDATABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "stopMessageLiveLocation",
             params: $body,
         );
@@ -283,7 +283,7 @@ trait HasMessageManager
         ];
 
         return $this->bot->request(
-            method: HttpMethod::UPDATABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "editMessageLiveLocation",
             params: $body,
         );
@@ -304,7 +304,7 @@ trait HasMessageManager
         ];
 
         return $this->bot->request(
-            method: HttpMethod::UPDATABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "stopPoll",
             params: $body,
         );

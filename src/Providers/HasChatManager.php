@@ -249,7 +249,7 @@ trait HasChatManager
         ];
 
         return $this->bot->request(
-            method: HttpMethod::UPDATABLE,
+            method: HttpMethod::CREATABLE,
             endpoint: "editChatInviteLink",
             params: $body,
         );
