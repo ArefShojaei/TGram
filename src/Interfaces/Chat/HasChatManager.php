@@ -7,6 +7,8 @@ interface HasChatManager
     public function banChatMember(
         bool $revoke_messages = true,
         ?int $until_date = null,
+        ?int $chat_id = null,
+        ?int $user_id = null,
     ): object;
 
     public function unbanChatMember(
@@ -16,6 +18,8 @@ interface HasChatManager
     ): object;
 
     public function restrictChatMember(
+        ?int $chat_id = null,
+        ?int $user_id = null,
         bool $can_send_messages = false,
         bool $can_send_audios = false,
         bool $can_send_documents = false,
@@ -35,6 +39,8 @@ interface HasChatManager
     ): object;
 
     public function promoteChatMember(
+        ?int $chat_id = null,
+        ?int $user_id = null,
         bool $is_anonymous = false,
         bool $can_manage_chat = false,
         bool $can_delete_messages = false,
@@ -61,6 +67,7 @@ interface HasChatManager
     public function getChatMember(int $user_id, ?int $chat_id = null): object;
 
     public function createChatInviteLink(
+        ?int $chat_id = null,
         ?string $name = null,
         ?int $expire_date = null,
         ?int $member_limit = null,
@@ -69,6 +76,7 @@ interface HasChatManager
 
     public function editChatInviteLink(
         string $invite_link,
+        ?int $chat_id = null,
         ?string $name = null,
         ?int $expire_date = null,
         ?int $member_limit = null,
@@ -80,7 +88,7 @@ interface HasChatManager
         ?int $chat_id = null,
     ): object;
 
-    public function setChatTitle(string $title): object;
+    public function setChatTitle(string $title, ?int $chat_id = null): object;
 
     public function setChatPhoto(string $photo): object;
 
@@ -92,6 +100,7 @@ interface HasChatManager
     ): object;
 
     public function setChatPermissions(
+        ?int $chat_id = null,
         bool $can_send_messages = false,
         bool $can_send_audios = false,
         bool $can_send_documents = false,
