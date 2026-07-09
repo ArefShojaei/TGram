@@ -10,11 +10,13 @@ trait HasChatManager
     public function banChatMember(
         bool $revoke_messages = true,
         ?int $until_date = null,
+        ?int $chat_id = null,
+        ?int $user_id = null,
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "user_id" => $this->update->user->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "user_id" => $user_id ?? $this->update->user->id,
                 "revoke_messages" => $revoke_messages,
                 "until_date" => $until_date,
             ],
@@ -27,12 +29,15 @@ trait HasChatManager
         );
     }
 
-    public function unbanChatMember(bool $only_if_banned = true): object
-    {
+    public function unbanChatMember(
+        bool $only_if_banned = true,
+        ?int $chat_id = null,
+        ?int $user_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "user_id" => $this->update->user->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "user_id" => $user_id ?? $this->update->user->id,
                 "only_if_banned" => $only_if_banned,
             ],
         ];
@@ -45,6 +50,8 @@ trait HasChatManager
     }
 
     public function restrictChatMember(
+        ?int $chat_id = null,
+        ?int $user_id = null,
         bool $can_send_messages = false,
         bool $can_send_audios = false,
         bool $can_send_documents = false,
@@ -81,8 +88,8 @@ trait HasChatManager
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "user_id" => $this->update->user->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "user_id" => $user_id ?? $this->update->user->id,
                 "permissions" => json_encode($permissions),
                 "until_date" => $until_date,
                 "use_independent_chat_permissions" => $use_independent_chat_permissions,
@@ -97,6 +104,8 @@ trait HasChatManager
     }
 
     public function promoteChatMember(
+        ?int $chat_id = null,
+        ?int $user_id = null,
         bool $is_anonymous = false,
         bool $can_manage_chat = false,
         bool $can_delete_messages = false,
@@ -133,8 +142,8 @@ trait HasChatManager
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "user_id" => $this->update->user->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "user_id" => $user_id ?? $this->update->user->id,
                 ...$permissions,
             ],
         ];
@@ -146,11 +155,11 @@ trait HasChatManager
         );
     }
 
-    public function getChat(): object
+    public function getChat(?int $chat_id = null): object
     {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
             ],
         ];
 
@@ -161,11 +170,11 @@ trait HasChatManager
         );
     }
 
-    public function getChatMemberCount(): object
+    public function getChatMemberCount(?int $chat_id = null): object
     {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
             ],
         ];
 
@@ -176,11 +185,11 @@ trait HasChatManager
         );
     }
 
-    public function getChatAdministrators(): object
+    public function getChatAdministrators(?int $chat_id = null): object
     {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
             ],
         ];
 
@@ -191,11 +200,11 @@ trait HasChatManager
         );
     }
 
-    public function getChatMember(int $user_id): object
+    public function getChatMember(int $user_id, ?int $chat_id = null): object
     {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "user_id" => $user_id,
             ],
         ];
@@ -208,6 +217,7 @@ trait HasChatManager
     }
 
     public function createChatInviteLink(
+        ?int $chat_id = null,
         ?string $name = null,
         ?int $expire_date = null,
         ?int $member_limit = null,
@@ -215,7 +225,7 @@ trait HasChatManager
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "name" => $name,
                 "expire_date" => $expire_date,
                 "member_limit" => $member_limit,
@@ -232,6 +242,7 @@ trait HasChatManager
 
     public function editChatInviteLink(
         string $invite_link,
+        ?int $chat_id = null,
         ?string $name = null,
         ?int $expire_date = null,
         ?int $member_limit = null,
@@ -239,7 +250,7 @@ trait HasChatManager
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "invite_link" => $invite_link,
                 "name" => $name,
                 "expire_date" => $expire_date,
@@ -255,11 +266,13 @@ trait HasChatManager
         );
     }
 
-    public function revokeChatInviteLink(string $invite_link): object
-    {
+    public function revokeChatInviteLink(
+        string $invite_link,
+        ?int $chat_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "invite_link" => $invite_link,
             ],
         ];
@@ -271,7 +284,7 @@ trait HasChatManager
         );
     }
 
-    public function setChatTitle(string $title): object
+    public function setChatTitle(string $title, ?int $chat_id = null): object
     {
         if (empty(trim($title))) {
             throw new ValidationException("Chat title cannot be empty");
@@ -279,7 +292,7 @@ trait HasChatManager
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "title" => $title,
             ],
         ];
@@ -300,7 +313,7 @@ trait HasChatManager
     {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
             ],
         ];
 
@@ -311,11 +324,13 @@ trait HasChatManager
         );
     }
 
-    public function setChatDescription(string $description): object
-    {
+    public function setChatDescription(
+        string $description,
+        ?int $chat_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "description" => $description,
             ],
         ];
@@ -328,6 +343,7 @@ trait HasChatManager
     }
 
     public function setChatPermissions(
+        ?int $chat_id = null,
         bool $can_send_messages = false,
         bool $can_send_audios = false,
         bool $can_send_documents = false,
@@ -363,7 +379,7 @@ trait HasChatManager
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "permissions" => json_encode($permissions),
                 "use_independent_chat_permissions" => $use_independent_chat_permissions,
             ],
@@ -376,11 +392,11 @@ trait HasChatManager
         );
     }
 
-    public function exportChatInviteLink(): string
+    public function exportChatInviteLink(?int $chat_id = null): string
     {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
             ],
         ];
 
@@ -399,11 +415,11 @@ trait HasChatManager
         return $response->result;
     }
 
-    public function leaveChat(): object
+    public function leaveChat(?int $chat_id = null): object
     {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
             ],
         ];
 
@@ -414,11 +430,13 @@ trait HasChatManager
         );
     }
 
-    public function approveChatJoinRequest(int $user_id): object
-    {
+    public function approveChatJoinRequest(
+        int $user_id,
+        ?int $chat_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "user_id" => $user_id,
             ],
         ];
@@ -430,11 +448,13 @@ trait HasChatManager
         );
     }
 
-    public function declineChatJoinRequest(int $user_id): object
-    {
+    public function declineChatJoinRequest(
+        int $user_id,
+        ?int $chat_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "user_id" => $user_id,
             ],
         ];

@@ -7,29 +7,32 @@ interface HasMediaSender
     public function sendLocation(
         float $latitude,
         float $longitude,
+        ?int $chat_id = null,
         ?int $live_period = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
         ?int $message_thread_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object;
 
     public function sendContact(
         string $phone_number,
         string $first_name,
+        ?int $chat_id = null,
         ?string $last_name = null,
         ?string $vcard = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $reply_to_message_id = null,
         ?int $message_thread_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object;
 
     public function sendPoll(
         string $question,
         array $options,
+        ?int $chat_id = null,
         bool $is_anonymous = true,
         string $type = "regular",
         bool $allows_multiple_answers = false,
@@ -44,7 +47,7 @@ interface HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object;
 
     public function sendVenue(
@@ -52,6 +55,7 @@ interface HasMediaSender
         float $longitude,
         string $title,
         string $address,
+        ?int $chat_id = null,
         ?string $foursquare_id = null,
         ?string $foursquare_type = null,
         ?string $google_place_id = null,
@@ -60,7 +64,7 @@ interface HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object;
 
     public function sendInvoice(
@@ -70,6 +74,7 @@ interface HasMediaSender
         string $provider_token,
         string $currency,
         array $prices,
+        ?int $chat_id = null,
         ?string $provider_data = null,
         ?string $photo_url = null,
         ?int $photo_size = null,
@@ -88,7 +93,7 @@ interface HasMediaSender
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?array $reply_markup = null
+        ?array $reply_markup = null,
     ): object;
 
     public function sendPhoto(
@@ -107,7 +112,7 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object;
 
     public function sendAudio(
@@ -127,7 +132,7 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object;
 
     public function sendDocument(
@@ -145,7 +150,7 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object;
 
     public function sendVideo(
@@ -169,7 +174,7 @@ interface HasMediaSender
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
         ?string $message_effect_id = null,
-        ?int $start_timestamp = null
+        ?int $start_timestamp = null,
     ): object;
 
     public function sendAnimation(
@@ -191,7 +196,7 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object;
 
     public function sendSticker(
@@ -206,7 +211,7 @@ interface HasMediaSender
         ?array $suggested_post_parameters = null,
         ?string $business_connection_id = null,
         ?bool $allow_paid_broadcast = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object;
 
     public function sendVoice(
@@ -221,7 +226,7 @@ interface HasMediaSender
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null,
         ?string $business_connection_id = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object;
 
     public function sendVideoNote(
@@ -234,32 +239,35 @@ interface HasMediaSender
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null,
         ?string $business_connection_id = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object;
 
     public function sendMediaGroup(
         array $media,
+        ?int $chat_id = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
-        ?string $business_connection_id = null
+        ?string $business_connection_id = null,
     ): object;
 
     public function sendDice(
         ?string $emoji = "🎲",
+        ?int $chat_id = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $message_thread_id = null,
         ?int $reply_to_message_id = null,
         ?array $reply_markup = null,
         ?string $business_connection_id = null,
-        ?string $message_effect_id = null
+        ?string $message_effect_id = null,
     ): object;
 
     public function setMessageReaction(
         int $message_id,
+        ?int $chat_id = null,
         ?array $reaction = null,
-        bool $is_big = false
+        bool $is_big = false,
     ): object;
 }

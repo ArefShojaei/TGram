@@ -9,6 +9,7 @@ trait HasMessageManager
 {
     public function sendMessage(
         string $text,
+        ?int $chat_id = null,
         ?string $parse_mode = "HTML",
         ?array $reply_markup = null,
         ?int $reply_to_message_id = null,
@@ -23,7 +24,7 @@ trait HasMessageManager
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "text" => $text,
                 "parse_mode" => $parse_mode,
                 "disable_web_page_preview" => $disable_web_page_preview,
@@ -44,11 +45,13 @@ trait HasMessageManager
         );
     }
 
-    public function sendChatAction(ChatAction $action): object
-    {
+    public function sendChatAction(
+        ChatAction $action,
+        ?int $chat_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "action" => $action->value,
             ],
         ];
@@ -62,6 +65,8 @@ trait HasMessageManager
 
     public function editMessageText(
         string $text,
+        ?int $chat_id = null,
+        ?int $message_id = null,
         ?string $parse_mode = "HTML",
         ?array $reply_markup = null,
     ): object {
@@ -71,8 +76,9 @@ trait HasMessageManager
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $this->update->message->message_id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" =>
+                    $message_id ?? $this->update->message->message_id,
                 "text" => $text,
                 "parse_mode" => $parse_mode,
                 "reply_markup" => $reply_markup
@@ -90,6 +96,8 @@ trait HasMessageManager
 
     public function editMessageCaption(
         string $caption,
+        ?int $chat_id = null,
+        ?int $message_id = null,
         ?string $parse_mode = "HTML",
         ?array $reply_markup = null,
     ): object {
@@ -99,8 +107,9 @@ trait HasMessageManager
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $this->update->message->message_id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" =>
+                    $message_id ?? $this->update->message->message_id,
                 "caption" => $caption,
                 "parse_mode" => $parse_mode,
                 "reply_markup" => $reply_markup
@@ -116,12 +125,16 @@ trait HasMessageManager
         );
     }
 
-    public function editMessageReplyMarkup(array $reply_markup): object
-    {
+    public function editMessageReplyMarkup(
+        array $reply_markup,
+        ?int $chat_id = null,
+        ?int $message_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $this->update->message->message_id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" =>
+                    $message_id ?? $this->update->message->message_id,
                 "reply_markup" => json_encode($reply_markup),
             ],
         ];
@@ -136,11 +149,14 @@ trait HasMessageManager
     public function editMessageMedia(
         array $media,
         ?array $reply_markup = null,
+        ?int $chat_id = null,
+        ?int $message_id = null,
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $this->update->message->message_id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" =>
+                    $message_id ?? $this->update->message->message_id,
                 "media" => json_encode($media),
                 "reply_markup" => $reply_markup
                     ? json_encode($reply_markup)
@@ -155,12 +171,15 @@ trait HasMessageManager
         );
     }
 
-    public function deleteMessage(): object
-    {
+    public function deleteMessage(
+        ?int $chat_id = null,
+        ?int $message_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $this->update->message->message_id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" =>
+                    $message_id ?? $this->update->message->message_id,
             ],
         ];
 
@@ -171,15 +190,17 @@ trait HasMessageManager
         );
     }
 
-    public function deleteMessages(array $message_ids): object
-    {
+    public function deleteMessages(
+        array $message_ids,
+        ?int $chat_id = null,
+    ): object {
         if (empty($message_ids)) {
             throw new ValidationException("Message IDs array cannot be empty");
         }
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "message_ids" => json_encode($message_ids),
             ],
         ];
@@ -191,12 +212,16 @@ trait HasMessageManager
         );
     }
 
-    public function pinChatMessage(bool $disable_notification = true): object
-    {
+    public function pinChatMessage(
+        bool $disable_notification = true,
+        ?int $chat_id = null,
+        ?int $message_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $this->update->message->message_id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" =>
+                    $message_id ?? $this->update->message->message_id,
                 "disable_notification" => $disable_notification,
             ],
         ];
@@ -208,12 +233,15 @@ trait HasMessageManager
         );
     }
 
-    public function unpinChatMessage(): object
-    {
+    public function unpinChatMessage(
+        ?int $chat_id = null,
+        ?int $message_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $this->update->message->message_id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" =>
+                    $message_id ?? $this->update->message->message_id,
             ],
         ];
 
@@ -224,11 +252,11 @@ trait HasMessageManager
         );
     }
 
-    public function unpinAllChatMessages(): object
+    public function unpinAllChatMessages(?int $chat_id = null): object
     {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
             ],
         ];
 
@@ -239,12 +267,16 @@ trait HasMessageManager
         );
     }
 
-    public function stopMessageLiveLocation(?array $reply_markup = null): object
-    {
+    public function stopMessageLiveLocation(
+        ?array $reply_markup = null,
+        ?int $chat_id = null,
+        ?int $message_id = null,
+    ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $this->update->message->message_id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" =>
+                    $message_id ?? $this->update->message->message_id,
                 "reply_markup" => $reply_markup
                     ? json_encode($reply_markup)
                     : null,
@@ -259,10 +291,11 @@ trait HasMessageManager
     }
 
     public function editMessageLiveLocation(
-        int $messageId,
+        int $message_id,
         float $latitude,
         float $longitude,
         ?array $reply_markup = null,
+        ?int $chat_id = null,
     ): object {
         if (!is_numeric($latitude) || !is_numeric($longitude)) {
             throw new ValidationException(
@@ -272,8 +305,8 @@ trait HasMessageManager
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $messageId,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" => $message_id,
                 "latitude" => $latitude,
                 "longitude" => $longitude,
                 "reply_markup" => $reply_markup
@@ -290,13 +323,14 @@ trait HasMessageManager
     }
 
     public function stopPoll(
-        int $messageId,
+        int $message_id,
+        ?int $chat_id = null,
         ?array $reply_markup = null,
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "message_id" => $messageId,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "message_id" => $message_id,
                 "reply_markup" => $reply_markup
                     ? json_encode($reply_markup)
                     : null,
@@ -311,8 +345,9 @@ trait HasMessageManager
     }
 
     public function copyMessage(
-        int|string $fromChatId,
-        int $messageId,
+        int|string $from_chat_id,
+        int $message_id,
+        ?int $chat_id = null,
         ?string $caption = null,
         ?string $parse_mode = null,
         ?array $reply_markup = null,
@@ -320,9 +355,9 @@ trait HasMessageManager
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "from_chat_id" => $fromChatId,
-                "message_id" => $messageId,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "from_chat_id" => $from_chat_id,
+                "message_id" => $message_id,
                 "caption" => $caption,
                 "parse_mode" => $parse_mode,
                 "reply_markup" => $reply_markup
@@ -340,16 +375,17 @@ trait HasMessageManager
     }
 
     public function forwardMessage(
-        int|string $fromChatId,
-        int $messageId,
+        int|string $from_chat_id,
+        int $message_id,
+        ?int $chat_id = null,
         bool $disable_notification = false,
         bool $protect_content = false,
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
-                "from_chat_id" => $fromChatId,
-                "message_id" => $messageId,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
+                "from_chat_id" => $from_chat_id,
+                "message_id" => $message_id,
                 "disable_notification" => $disable_notification,
                 "protect_content" => $protect_content,
             ],

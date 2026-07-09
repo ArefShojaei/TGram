@@ -18,6 +18,7 @@ trait HasMediaSender
     public function sendLocation(
         float $latitude,
         float $longitude,
+        ?int $chat_id = null,
         ?int $live_period = null,
         bool $disable_notification = false,
         bool $protect_content = false,
@@ -48,7 +49,7 @@ trait HasMediaSender
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "latitude" => $latitude,
                 "longitude" => $longitude,
                 "live_period" => $live_period,
@@ -72,6 +73,7 @@ trait HasMediaSender
     public function sendContact(
         string $phone_number,
         string $first_name,
+        ?int $chat_id = null,
         ?string $last_name = null,
         ?string $vcard = null,
         bool $disable_notification = false,
@@ -90,7 +92,7 @@ trait HasMediaSender
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "phone_number" => $phone_number,
                 "first_name" => $first_name,
                 "last_name" => $last_name,
@@ -115,6 +117,7 @@ trait HasMediaSender
     public function sendPoll(
         string $question,
         array $options,
+        ?int $chat_id = null,
         bool $is_anonymous = true,
         string $type = "regular",
         bool $allows_multiple_answers = false,
@@ -158,7 +161,7 @@ trait HasMediaSender
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "question" => $question,
                 "options" => json_encode($options),
                 "is_anonymous" => $is_anonymous,
@@ -195,6 +198,7 @@ trait HasMediaSender
         float $longitude,
         string $title,
         string $address,
+        ?int $chat_id = null,
         ?string $foursquare_id = null,
         ?string $foursquare_type = null,
         ?string $google_place_id = null,
@@ -221,7 +225,7 @@ trait HasMediaSender
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "latitude" => $latitude,
                 "longitude" => $longitude,
                 "title" => $title,
@@ -254,6 +258,7 @@ trait HasMediaSender
         string $provider_token,
         string $currency,
         array $prices,
+        ?int $chat_id = null,
         ?string $provider_data = null,
         ?string $photo_url = null,
         ?int $photo_size = null,
@@ -288,7 +293,7 @@ trait HasMediaSender
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "title" => $title,
                 "description" => $description,
                 "payload" => $payload,
@@ -674,6 +679,7 @@ trait HasMediaSender
 
     public function sendMediaGroup(
         array $media,
+        ?int $chat_id = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $message_thread_id = null,
@@ -692,7 +698,7 @@ trait HasMediaSender
 
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "media" => json_encode($media),
                 "disable_notification" => $disable_notification,
                 "protect_content" => $protect_content,
@@ -711,6 +717,7 @@ trait HasMediaSender
 
     public function sendDice(
         ?string $emoji = "🎲",
+        ?int $chat_id = null,
         bool $disable_notification = false,
         bool $protect_content = false,
         ?int $message_thread_id = null,
@@ -721,7 +728,7 @@ trait HasMediaSender
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "emoji" => $emoji,
                 "disable_notification" => $disable_notification,
                 "protect_content" => $protect_content,
@@ -744,12 +751,13 @@ trait HasMediaSender
 
     public function setMessageReaction(
         int $message_id,
+        ?int $chat_id = null,
         ?array $reaction = null,
         bool $is_big = false,
     ): object {
         $body = [
             "form_params" => [
-                "chat_id" => $this->update->chat->id,
+                "chat_id" => $chat_id ?? $this->update->chat->id,
                 "message_id" => $message_id,
                 "reaction" => $reaction ? json_encode($reaction) : null,
                 "is_big" => $is_big,
