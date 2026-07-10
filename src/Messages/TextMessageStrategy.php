@@ -21,6 +21,10 @@ final class TextMessageStrategy extends MessageExecutor implements
         );
 
         foreach ($this->hears as $pattern => $handler) {
+            if (!$this->isRegexPattern($pattern)) {
+                $pattern = "/" . $pattern . "/";
+            }
+
             preg_match($pattern, $this->input, $matches);
 
             if (count($matches)) break;
@@ -31,5 +35,10 @@ final class TextMessageStrategy extends MessageExecutor implements
         }
 
         $this->execute($handler, $context);
+    }
+
+    private function isRegexPattern(string $pattern): bool
+    {
+        return str_starts_with($pattern, "/") && str_ends_with($pattern, "/");
     }
 }
