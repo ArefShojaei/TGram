@@ -20,9 +20,15 @@ final class TextMessageStrategy extends MessageExecutor implements
             FallbackMessage::TEXT->value,
         );
 
-        $handler =
-            $this->hears[$this->input] ??
-            fn(Context $ctx) => $ctx->sendMessage($fallbackMessage);
+        foreach ($this->hears as $pattern => $handler) {
+            preg_match($pattern, $this->input, $matches);
+
+            if (count($matches)) break;
+        }
+
+        if (empty($matches)) {
+            $handler = $this->getFallbackHandler($fallbackMessage);
+        }
 
         $this->execute($handler, $context);
     }
