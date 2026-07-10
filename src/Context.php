@@ -15,8 +15,22 @@ final class Context implements IContext
 {
     use HasMessageManager, HasMediaSender, HasChatManager, HasCallbackQuery;
 
+    private array $commandParams = [];
+
     public function __construct(
         public readonly Update $update,
         private Bot $bot,
     ) {}
+
+    public function setParams(array $params): void
+    {
+        $this->commandParams = $params;
+    }
+
+    public function params(?string $key = null): ?array
+    {
+        if (!isset($key)) return $this->commandParams;
+
+        return $this->commandParams[$key] ?? null;
+    }
 }

@@ -13,4 +13,9 @@ interface Context extends
     HasMediaSender,
     HasChatManager,
     HasMessageManager,
-    HasCallbackQuery {}
+    HasCallbackQuery
+{
+    public function setParams(array $params): void;
+
+    public function params(?string $key = null): ?array;
+}
