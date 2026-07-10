@@ -28,6 +28,8 @@ final class CommandMessageStrategy extends MessageExecutor implements
         );
 
         foreach ($this->commands as $command => $handler) {
+            $command = str_replace("/", "\/", $command);
+
             $pattern =
                 "/^" .
                 str_replace(
