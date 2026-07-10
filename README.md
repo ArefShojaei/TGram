@@ -37,6 +37,7 @@ A Powerful and Easy-to-Use PHP Library for Building Telegram Bot
 **TGram** is a modern, user-friendly PHP framework for building Telegram bots. Whether you're creating a simple bot that responds to messages or building a complex interactive application, TGram provides all the tools you need with an intuitive API.
 
 With TGram, you can:
+
 - Easily create Telegram bots in PHP
 - Handle messages and commands with simple syntax
 - Build interactive keyboards and menus
@@ -51,9 +52,11 @@ With TGram, you can:
 
 - **Simple API**: Clean, intuitive syntax for developers of all levels
 - **Command Handling**: Built-in support for bot commands (`/start`, `/help`, etc.)
-- **Message Listeners**: Listen for specific messages or patterns
+- **Command Parameters**: Extract dynamic values from commands (`/user/{id}`, `/post/{slug}`)
+- **Message Listeners**: Listen for exact messages or regex patterns
+- **Regex Support**: Match messages using custom regular expressions
 - **Keyboard Support**: Create inline and reply keyboards with buttons
-- **Message Types (  Media )**: Handle photos, documents, videos and more
+- **Message Types ( Media )**: Handle photos, documents, videos and more
 - **Chat Management**: Manage chat information and user interactions
 - **Multiple Modes**: Support for both Polling and Webhook processing
 - **Error Handling**: Robust exception handling and error reporting
@@ -112,7 +115,7 @@ use TGram\{Telegram, Context};
 $app = new Telegram("YOUR_BOT_TOKEN_HERE");
 
 // Handle /start command
-$app->start(function(Context $ctx) {
+$app->start(function (Context $ctx) {
     $ctx->sendMessage("Hello! 👋 I'm your bot!");
 });
 
@@ -121,6 +124,7 @@ $app->run();
 ```
 
 **That's it!** Your bot will now:
+
 1. Listen for incoming messages
 2. Respond to `/start` command with a greeting
 3. Keep running and polling for new messages
@@ -147,16 +151,17 @@ $bot = new Telegram("TOKEN");
 ### The Context Object
 
 The `Context` object is passed to your handlers and contains:
+
 - **Update Information**: Details about the incoming message
 - **User Information**: Who sent the message
 - **Methods**: Functions to send responses
 
 ```php
-$app->start(function(Context $context) {
+$app->start(function (Context $context) {
     // Access the user
     $user = $context->update->user;
     echo $user->first_name; // User's first name
-    
+
     // Send a response
     $context->sendMessage("Hello!");
 });
@@ -167,11 +172,13 @@ $app->start(function(Context $context) {
 TGram supports two ways to receive updates:
 
 **Polling** (Default - Long Polling):
+
 - Your bot continuously asks Telegram for new messages
 - Simple to set up, no server required
 - Good for development and small deployments
 
 **Webhook** (Server-based):
+
 - Telegram sends updates directly to your server
 - More efficient for production
 - Requires a public URL and SSL certificate
@@ -195,7 +202,7 @@ $app->run(ProcessMode::WEBHOOK);
 The `/start` command is special - it's sent when a user first interacts with your bot:
 
 ```php
-$app->start(function(Context $ctx) {
+$app->start(function (Context $ctx) {
     $user = $ctx->update->user;
     $message = "Welcome, {$user->first_name}! 👋";
     $ctx->sendMessage($message);
@@ -207,7 +214,7 @@ $app->start(function(Context $ctx) {
 Handle custom commands with the `command()` method:
 
 ```php
-$app->command("/help", function(Context $ctx) {
+$app->command("/help", function (Context $ctx) {
     $message = "
 📖 **Available Commands:**
 /start - Start the bot
@@ -217,59 +224,83 @@ $app->command("/help", function(Context $ctx) {
     $ctx->sendMessage($message);
 });
 
-$app->command("/about", function(Context $ctx) {
+$app->command("/about", function (Context $ctx) {
     $ctx->sendMessage("I'm a TGram bot! 🤖");
 });
 ```
 
-### 3. Listening for Specific Messages
+### 3. Command Parameters
+
+TGram supports dynamic command parameters using placeholders:
+
+```php
+$app->command("/user/{id}", function (Context $ctx) {
+    $id = $ctx->params("id");
+
+    $ctx->sendMessage("User ID: " . $id);
+});
+```
+
+### 4. Listening for Specific Messages
 
 Use the `hears()` method to respond to exact messages:
 
 ```php
-$app->hears("Hello", function(Context $ctx) {
+$app->hears("Hello", function (Context $ctx) {
     $ctx->sendMessage("Hello to you too! 👋");
 });
 
-$app->hears("How are you?", function(Context $ctx) {
+$app->hears("How are you?", function (Context $ctx) {
     $ctx->sendMessage("I'm doing great, thanks for asking! 😊");
 });
 ```
 
-### 4. Listening for Specific Media message
+### 5. Regex Message Patterns
+
+`hears()` also supports regular expression patterns:
+
+```php
+$app->hears('/^hello\s+(.*)$/', function (Context $ctx) {
+    $name = $ctx->matches[1];
+
+    $ctx->sendMessage("Hello $name!");
+});
+```
+
+### 6. Listening for Specific Media message
 
 Use the `on()` method to respond to exact media messages:
 
 ```php
 use TGram\Enums\MediaType;
 
-$app->on(MediaType::PHOTO, function(Context $ctx) {
+$app->on(MediaType::PHOTO, function (Context $ctx) {
     $ctx->sendMessage("Media message is: Photo");
 });
 
-$app->on(MediaType::LOCATION, function(Context $ctx) {
+$app->on(MediaType::LOCATION, function (Context $ctx) {
     $ctx->sendMessage("Media message is: Location");
 });
 ```
 
-### 5. Listening for Callback-query
+### 7. Listening for Callback-query
 
 Use the `callback()` method to respond to exact callback-query messages:
 
 ```php
-$app->callback(function(Context $ctx) {
+$app->callback(function (Context $ctx) {
     $ctx->sendMessage("Callback-query data received.");
 });
 ```
 
-### 6. Listening for Middlewares before all things! 
+### 8. Listening for Middlewares before all things!
 
 Use the `use()` method to run a Middleware before messages:
 
 ```php
-$app->use(function(Context $ctx) {
+$app->use(function (Context $ctx) {
     $isAdmin = $ctx->update->message === "Dashboard";
-    
+
     if (!$isAdmin) {
         $ctx->sendMessage("403 | Forbideen");
     }
@@ -287,20 +318,20 @@ $app->use(function(Context $ctx) {
 When a message arrives, you can access detailed information:
 
 ```php
-$app->start(function(Context $ctx) {
+$app->start(function (Context $ctx) {
     $message = $ctx->update->message;
     $user = $ctx->update->user;
-    
+
     // Message details
-    echo $message->message_id;  // Unique message ID
-    echo $message->text;         // Message text
-    echo $message->chat->id;     // Chat ID
-    
+    echo $message->message_id; // Unique message ID
+    echo $message->text; // Message text
+    echo $message->chat->id; // Chat ID
+
     // User details
-    echo $user->id;              // User's numeric ID
-    echo $user->first_name;      // First name
-    echo $user->username;        // Username (if set)
-    echo $user->is_bot;          // Is this user a bot?
+    echo $user->id; // User's numeric ID
+    echo $user->first_name; // First name
+    echo $user->username; // Username (if set)
+    echo $user->is_bot; // Is this user a bot?
 });
 ```
 
@@ -339,8 +370,8 @@ Add additional parameters to customize your message:
 ```php
 $ctx->sendMessage(
     "Hello!",
-    parse_mode: "HTML",           // or "Markdown"
-    disable_web_page_preview: true // Don't show link previews
+    parse_mode: "HTML", // or "Markdown"
+    disable_web_page_preview: true, // Don't show link previews
 );
 ```
 
@@ -350,13 +381,13 @@ $ctx->sendMessage(
 // Send a photo
 $ctx->sendPhoto(
     "https://example.com/photo.jpg",
-    caption: "Beautiful photo! 📸"
+    caption: "Beautiful photo! 📸",
 );
 
 // Send a document
 $ctx->sendDocument(
     "https://example.com/file.pdf",
-    caption: "Important document"
+    caption: "Important document",
 );
 
 // Send voice
@@ -371,7 +402,7 @@ Update previously sent messages:
 $ctx->editMessageText(
     text: "Updated message",
     message_id: $messageId,
-    chat_id: $chatId
+    chat_id: $chatId,
 );
 ```
 
@@ -402,7 +433,7 @@ Inline keyboards appear directly above or below messages:
 $keyboard = Keyboard::inline()
     ->row(
         Button::url("GitHub", "https://github.com/ArefShojaei/TGram"),
-        Button::url("Docs", "https://example.com/docs")
+        Button::url("Docs", "https://example.com/docs"),
     )
     ->row(Button::callback("Delete", "action_delete"))
     ->toArray();
@@ -413,28 +444,33 @@ $ctx->sendMessage("Check these links:", reply_markup: $keyboard);
 ### Button Types
 
 **Text Button:**
+
 ```php
-Button::text("Click me")
+Button::text("Click me");
 ```
 
 **URL Button:**
+
 ```php
-Button::url("Visit GitHub", "https://github.com")
+Button::url("Visit GitHub", "https://github.com");
 ```
 
 **Callback Button:**
+
 ```php
-Button::callback("Vote 👍", "vote_yes")
+Button::callback("Vote 👍", "vote_yes");
 ```
 
 **Web App Button:**
+
 ```php
-Button::webApp("Open App", "https://example.com/app")
+Button::webApp("Open App", "https://example.com/app");
 ```
 
 ### Keyboard Examples
 
 **Simple Row:**
+
 ```php
 $keyboard = Keyboard::reply()
     ->row(Button::text("Yes"), Button::text("No"))
@@ -442,6 +478,7 @@ $keyboard = Keyboard::reply()
 ```
 
 **Multiple Rows:**
+
 ```php
 $keyboard = Keyboard::reply()
     ->row(Button::text("Option 1"))
@@ -452,10 +489,9 @@ $keyboard = Keyboard::reply()
 ```
 
 **Hide Keyboard:**
+
 ```php
-$ctx->sendMessage("Keyboard hidden", 
-    reply_markup: ["remove_keyboard" => true]
-);
+$ctx->sendMessage("Keyboard hidden", reply_markup: ["remove_keyboard" => true]);
 ```
 
 ---
@@ -505,9 +541,9 @@ $bot->run();
 When users click inline buttons, handle the callback:
 
 ```php
-$app->callback(function(Context $ctx) {
+$app->callback(function (Context $ctx) {
     $data = $ctx->update->callback_query->data;
-    
+
     if ($data === "vote_yes") {
         $ctx->answerCallbackQuery("Thanks for voting! ✅");
         // Update message or send new one
@@ -520,13 +556,13 @@ $app->callback(function(Context $ctx) {
 Get and manage chat information:
 
 ```php
-$app->start(function(Context $ctx) {
+$app->start(function (Context $ctx) {
     $chat = $ctx->update->message->chat;
-    
-    echo $chat->id;           // Chat ID
-    echo $chat->title;        // Chat title (for groups)
-    echo $chat->type;         // "private", "group", "supergroup", etc.
-    
+
+    echo $chat->id; // Chat ID
+    echo $chat->title; // Chat title (for groups)
+    echo $chat->type; // "private", "group", "supergroup", etc.
+
     // Get chat info from API
     $chatInfo = $ctx->getChatInfo();
 });
@@ -539,12 +575,12 @@ Access detailed user data:
 ```php
 $user = $ctx->update->user;
 
-echo $user->id;              // Unique user ID
-echo $user->is_bot;          // Is a bot?
-echo $user->first_name;      // First name
-echo $user->last_name;       // Last name (optional)
-echo $user->username;        // Username (optional)
-echo $user->language_code;   // User's language
+echo $user->id; // Unique user ID
+echo $user->is_bot; // Is a bot?
+echo $user->first_name; // First name
+echo $user->last_name; // Last name (optional)
+echo $user->username; // Username (optional)
+echo $user->language_code; // User's language
 ```
 
 ### Middleware & Filters
@@ -552,13 +588,13 @@ echo $user->language_code;   // User's language
 Create custom filters for advanced message handling:
 
 ```php
-$app->command("/admin", function(Context $ctx) {
+$app->command("/admin", function (Context $ctx) {
     // Check if user is admin
     if ($ctx->update->user->id !== ADMIN_ID) {
         $ctx->sendMessage("❌ You don't have permission");
         return;
     }
-    
+
     $ctx->sendMessage("✅ Admin panel");
 });
 ```
@@ -587,10 +623,9 @@ To use webhooks instead of polling:
 ```php
 $app = new Telegram("TOKEN");
 
-$app->configure([
-    "webhook_url" => "https://your-domain.com/webhook.php",
-    "webhook_port" => 443,  // HTTPS port
-]);
+$webhook_url = "https://your-domain.com/webhook.php";
+$webhook_secret_token = "TOKEN"; # Optional
+$app->setWebhook($webhook_url, $webhook_secret_token);
 
 $app->run(ProcessMode::WEBHOOK);
 ```
@@ -611,62 +646,14 @@ use TGram\{Telegram, Context};
 
 $app = new Telegram("TOKEN");
 
-$app->start(function(Context $ctx) {
+$app->start(function (Context $ctx) {
     $ctx->sendMessage("Send me anything and I'll repeat it!");
 });
 
-$app->fallback(function(Context $ctx) {
-    $text = $ctx->update->message->text;
-    $ctx->sendMessage("You said: " . $text);
-});
-
 $app->run();
 ```
 
-### Example 2: Calculator Bot
-
-A bot that performs simple calculations:
-
-```php
-<?php
-require __DIR__ . "/vendor/autoload.php";
-
-use TGram\{Telegram, Context};
-
-$app = new Telegram("TOKEN");
-
-$app->start(function(Context $ctx) {
-    $ctx->sendMessage("Send me math like: 2 + 2");
-});
-
-$app->hears("/calculate", function(Context $ctx) {
-    $ctx->sendMessage("Type your calculation (e.g., 5 * 3)");
-});
-
-$app->fallback(function(Context $ctx) {
-    $text = $ctx->update->message->text;
-    
-    // Simple calculation
-    if (preg_match('/(\d+)\s*([\+\-\*\/])\s*(\d+)/', $text, $matches)) {
-        $a = (int)$matches[1];
-        $op = $matches[2];
-        $b = (int)$matches[3];
-        
-        $result = match($op) {
-            '+' => $a + $b,
-            '-' => $a - $b,
-            '*' => $a * $b,
-            '/' => $b !== 0 ? $a / $b : "Cannot divide by zero",
-        };
-        
-        $ctx->sendMessage("Result: $result");
-    }
-});
-
-$app->run();
-```
-
-### Example 3: Menu-Based Bot
+### Example 2: Menu-Based Bot
 
 A bot with navigation buttons:
 
@@ -679,32 +666,32 @@ use TGram\Utils\Keyboard\{Keyboard, Button};
 
 $app = new Telegram("TOKEN");
 
-$app->start(function(Context $ctx) {
+$app->start(function (Context $ctx) {
     $keyboard = Keyboard::reply()
         ->row(Button::text("📚 Learn"))
         ->row(Button::text("🎮 Games"))
         ->row(Button::text("⚙️ Settings"))
         ->toArray();
-    
+
     $ctx->sendMessage("Welcome! Choose an option:", reply_markup: $keyboard);
 });
 
-$app->hears("📚 Learn", function(Context $ctx) {
+$app->hears("📚 Learn", function (Context $ctx) {
     $ctx->sendMessage("Learning resources coming soon!");
 });
 
-$app->hears("🎮 Games", function(Context $ctx) {
+$app->hears("🎮 Games", function (Context $ctx) {
     $keyboard = Keyboard::inline()
         ->row(
             Button::callback("🎲 Dice", "game_dice"),
-            Button::callback("🃏 Card", "game_card")
+            Button::callback("🃏 Card", "game_card"),
         )
         ->toArray();
-    
+
     $ctx->sendMessage("Pick a game:", reply_markup: $keyboard);
 });
 
-$app->hears("⚙️ Settings", function(Context $ctx) {
+$app->hears("⚙️ Settings", function (Context $ctx) {
     $ctx->sendMessage("Settings panel will be here");
 });
 
@@ -722,6 +709,7 @@ TGram includes a comprehensive test suite with 105+ tests covering all major fea
 The test suite is organized into two main categories:
 
 **Unit Tests** - Test individual components in isolation:
+
 - Core classes (Bot, Telegram, Context)
 - Exceptions and error handling
 - Enums and data types
@@ -729,6 +717,7 @@ The test suite is organized into two main categories:
 - Utilities and helpers
 
 **Feature Tests** - Test complete workflows:
+
 - Bot initialization flow
 - Command handling
 - Message listening
@@ -758,11 +747,13 @@ This runs all 105+ tests and generates a summary report.
 #### Run Specific Test Categories
 
 **Run only Unit Tests:**
+
 ```bash
 vendor/bin/phpunit tests/Unit/
 ```
 
 **Run only Feature Tests:**
+
 ```bash
 vendor/bin/phpunit tests/Feature/
 ```
@@ -770,21 +761,25 @@ vendor/bin/phpunit tests/Feature/
 #### Run Individual Test Classes
 
 **Test Telegram class:**
+
 ```bash
 vendor/bin/phpunit tests/Unit/Core/TelegramTest.php
 ```
 
 **Test Exception handling:**
+
 ```bash
 vendor/bin/phpunit tests/Unit/Exceptions/InvalidTokenExceptionTest.php
 ```
 
 **Test Keyboard utilities:**
+
 ```bash
 vendor/bin/phpunit tests/Unit/Utils/KeyboardTest.php
 ```
 
 **Test listener abilities:**
+
 ```bash
 vendor/bin/phpunit tests/Unit/Abilities/CanProvideListenerTest.php
 ```
@@ -990,11 +985,11 @@ class MyNewTest extends TestCase
     public function testSomethingWorks(): void
     {
         // Arrange
-        $bot = new Telegram('token');
-        
+        $bot = new Telegram("token");
+
         // Act
         $result = $bot->doSomething();
-        
+
         // Assert
         $this->assertTrue($result);
     }
@@ -1010,6 +1005,7 @@ class MyNewTest extends TestCase
 **Problem:** Bot doesn't respond to messages
 
 **Solutions:**
+
 1. Verify your bot token is correct
 2. Check that your bot is actually running
 3. Make sure you've started a conversation with `/start`
@@ -1020,6 +1016,7 @@ class MyNewTest extends TestCase
 **Problem:** "Connection refused" or timeout errors
 
 **Solutions:**
+
 1. Check your internet connection
 2. Verify Telegram API is accessible from your server
 3. Increase timeout in configuration
@@ -1030,6 +1027,7 @@ class MyNewTest extends TestCase
 **Problem:** `sendMessage()` doesn't work
 
 **Solutions:**
+
 1. Verify chat ID is correct
 2. Ensure the context object is valid
 3. Check error messages in logs
@@ -1040,6 +1038,7 @@ class MyNewTest extends TestCase
 **Problem:** Bot crashes or uses too much memory
 
 **Solutions:**
+
 1. Reduce `polling_interval` to check less frequently
 2. Avoid storing large data in memory
 3. Clear temporary files regularly
@@ -1050,6 +1049,7 @@ class MyNewTest extends TestCase
 **Problem:** Tests are failing
 
 **Solutions:**
+
 1. Ensure PHPUnit is installed: `composer install`
 2. Check PHP version is 8.0+: `php -v`
 3. Verify all dependencies are installed: `composer update`
