@@ -22,7 +22,7 @@ final class MediaMessageStrategy extends MessageExecutor implements
 
         $handler =
             $this->events[$this->event] ??
-            fn(Context $ctx) => $ctx->sendMessage($fallbackMessage);
+            $this->getFallbackHandler($fallbackMessage);
 
         $this->execute($handler, $context);
     }
