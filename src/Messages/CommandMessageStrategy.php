@@ -64,6 +64,6 @@ final class CommandMessageStrategy extends MessageExecutor implements
             ARRAY_FILTER_USE_KEY,
         );
 
-        $context->update->message->params = $params;
+        $context->setParams($params);
     }
 }
