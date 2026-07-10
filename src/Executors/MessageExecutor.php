@@ -16,4 +16,9 @@ abstract class MessageExecutor extends BaseExecutor
 
         !is_null($callable) && call_user_func($callable, $context);
     }
+
+    protected function getFallbackHandler(string $fallbackMessage): Closure
+    {
+        return fn(Context $ctx) => $ctx->sendMessage($fallbackMessage);
+    }
 }
