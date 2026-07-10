@@ -2,7 +2,7 @@
     "name": "arefshojaei/tgram",
     "description": "PHP Telegram Bot",
     "type": "library",
-    "version": "1.0.0",
+    "version": "1.2.1",
     "license": "MIT",
     "prefer-stable": true,
     "minimum-stability": "stable",
