@@ -17,5 +17,5 @@ interface Context extends
 {
     public function setParams(array $params): void;
 
-    public function params(?string $key = null): ?array;
+    public function params(?string $key = null): string|array|null;
 }

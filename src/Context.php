@@ -27,7 +27,7 @@ final class Context implements IContext
         $this->commandParams = $params;
     }
 
-    public function params(?string $key = null): ?array
+    public function params(?string $key = null): string|array|null
     {
         if (!isset($key)) return $this->commandParams;
 
