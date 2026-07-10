@@ -74,4 +74,46 @@ final class MessageListeningTest extends TestCase
         $this->bot->hears('price: $99.99', function () {});
         $this->assertTrue(true);
     }
+
+    /**
+     * Test regex message listener can be registered.
+     */
+    public function testRegexMessageListenerCanBeRegistered(): void
+    {
+        $this->bot->hears('/^hello$/', function () {});
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Test regex listener with capture groups.
+     */
+    public function testRegexListenerWithCaptureGroups(): void
+    {
+        $this->bot->hears('/^price\s+(\w+)$/', function () {});
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Test regex listener with named capture groups.
+     */
+    public function testRegexListenerWithNamedCaptureGroups(): void
+    {
+        $this->bot->hears('/^price\s+(?<symbol>[A-Z]+)$/', function () {});
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Test multiple regex listeners can be registered.
+     */
+    public function testMultipleRegexListenersCanBeRegistered(): void
+    {
+        $this->bot->hears('/^hello$/', function () {});
+        $this->bot->hears('/^\d+$/', function () {});
+        $this->bot->hears('/^[a-z]+$/i', function () {});
+
+        $this->assertTrue(true);
+    }
 }

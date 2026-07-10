@@ -81,4 +81,59 @@ final class CommandHandlingTest extends TestCase
         $this->bot->command("/test", $callback);
         $this->assertTrue(true);
     }
+
+    /**
+     * Test command with single parameter can be registered.
+     */
+    public function testCommandWithSingleParameterCanBeRegistered(): void
+    {
+        $this->bot->command("/user/{id}", function (Context $context) {
+            return $context->params("id");
+        });
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Test command with multiple parameters can be registered.
+     */
+    public function testCommandWithMultipleParametersCanBeRegistered(): void
+    {
+        $this->bot->command("/user/{id}/post/{slug}", function (
+            Context $context,
+        ) {
+            return [$context->params("id"), $context->params("slug")];
+        });
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Test command parameter names can contain different identifiers.
+     */
+    public function testCommandWithDifferentParameterNamesCanBeRegistered(): void
+    {
+        $this->bot->command("/{username}/message/{messageId}", function (
+            Context $context,
+        ) {
+            return [
+                $context->params("username"),
+                $context->params("messageId"),
+            ];
+        });
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Test regex command pattern can be registered.
+     */
+    public function testRegexCommandPatternCanBeRegistered(): void
+    {
+        $this->bot->command("/price/{symbol}", function (Context $context) {
+            return $context->params("symbol");
+        });
+
+        $this->assertTrue(true);
+    }
 }
